@@ -1,0 +1,7 @@
+** package
+This is a sample code snippets.
+#+begin_src emacs-lisp
+  (setq awesome-tab-height 10)
+#+end_src
+
+
