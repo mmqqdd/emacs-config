@@ -1,0 +1,7 @@
+** 使.gitignore生效
+#+begin_src shell
+  ~/.emacs.d $ git rm -r –-cached . #清除缓存
+  ~/.emacs.d $ git add . #重新按照ignore的规则add所有的文件
+  ~/.emacs.d $ git commit -m “update .gitignore” #提交和注释
+#+end_src
+

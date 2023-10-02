@@ -1,12 +1,11 @@
 /awesome-tab/
 /elpa/
-/recentf/
+/recentf
 /server/
 /eshell/
 /auto-save-list/
 /transient/
-./pojects
-./places
+/projects
+/places
 *~
-./history
 /history
