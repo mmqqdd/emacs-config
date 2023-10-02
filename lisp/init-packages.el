@@ -8,4 +8,16 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
 
+(unless (package-installed-p 'use-package)
+	(package-refresh-contents)
+	(package-install 'use-package))
+
+(require 'use-package-ensure)
+(setq use-package-always-ensure t)
+
+(use-package restart-emacs
+  :ensure t)
+
+
+
 (provide 'init-packages)

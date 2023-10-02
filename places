@@ -1,0 +1,8 @@
+;;; -*- coding: utf-8; mode: lisp-data -*-
+(("/Users/mengqiangding/.emacs.d/init.el" . 299)
+ ("/Users/mengqiangding/.emacs.d/lisp/init-completion.el" . 794)
+ ("/Users/mengqiangding/.emacs.d/lisp/init-basic.el" . 823)
+ ("/Users/mengqiangding/.emacs.d/lisp/init-ui.el" . 900)
+ ("/Users/mengqiangding/.emacs.d/elpa/keycast-20230901.1234/keycast.el" . 18198)
+ ("/Users/mengqiangding/.emacs.d/lisp/"
+  (dired-filename . "/Users/mengqiangding/.emacs.d/lisp/custom.el")))

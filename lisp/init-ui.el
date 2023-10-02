@@ -24,7 +24,7 @@
 
 (global-hl-line-mode 1)
 
-(package-install 'doom-themes)
+(use-package doom-themes)
 (load-theme 'doom-one 1)
 
 (toggle-frame-maximized)
@@ -33,6 +33,17 @@
 (require 'awesome-tab)
 (awesome-tab-mode t)
 
+
+(use-package doom-modeline
+  :init
+  (doom-modeline-mode t))
+
+(use-package simple-modeline
+  :hook (after-init . size-indication-mode)
+  :init
+  (progn
+    (setq column-number-mode t)
+    ))
 
 
 (provide 'init-ui)

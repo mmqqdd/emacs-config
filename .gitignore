@@ -1,2 +1,12 @@
-awesome-tab/
-elpa/
+/awesome-tab/
+/elpa/
+/recentf/
+/server/
+/eshell/
+/auto-save-list/
+/transient/
+./pojects
+./places
+*~
+./history
+/history

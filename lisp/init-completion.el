@@ -1,40 +1,73 @@
+(use-package company
+  :bind (:map company-active-map
+	      ("C-n" . 'company-select-next)
+	      ("C-p" . 'company-select-previous))
+  :init
+  (global-company-mode t)
+  :config
+  (setq company-minimum-prefix-length 2)
+  (setq company-idle-delay 0))
 
 ;;modeline上显示我的所有的按键和执行的命令
-(package-install 'keycast)
-(keycast-mode-line-mode t)
+;(use-package keycast
+;  :init
+;  (add-to-list 'global-mode-string '("" keycast-mode-line))
+;  (keycast-mode-line-mode))
 
-(package-install 'company)
+(use-package keycast
+  :config
+  (define-minor-mode keycast-mode
+    "Show current command and its key binding in the mode line (fix for use with doom-mode-line)."
+    :global t
+    (if keycast-mode
+        (add-hook 'pre-command-hook 'keycast--update t)
+      (remove-hook 'pre-command-hook 'keycast--update)))
+  (add-to-list 'global-mode-string '("" keycast-mode-line))
+  (keycast-mode t))
+
+
+(use-package consult)
 
 ;;(package-install 'google-translate)
 
 ;; minibuf 出现选择列表
-(package-install 'vertico)
-(vertico-mode t)
+(use-package vertico
+  :init
+  (vertico-mode t))
 
 ;; 优化vertico 支持模糊搜索
-(package-install 'orderless)
-(setq completion-styles '(orderless)) 
+(use-package orderless
+  :config
+  (setq completion-styles '(orderless)))
 
 ;; 优化vertco 增加列表更多信息
-(package-install 'marginalia)
-(marginalia-mode t)
+(use-package marginalia
+  :init
+  (marginalia-mode t))
 
 ;; 增强一些奇奇怪怪的东西
-(package-install 'embark)
-(global-set-key (kbd "C-;") 'embark-act)
-(setq prefix-help-command 'embark-prefix-help-command) ;; 增强 C-x C-h 可以直接执行快捷键
+(use-package embark
+  :bind
+  ("C-;" . 'embark-act)
+  ("C-s" . 'consult-line)
+  ("M-s-i" . 'consult-imenu)
+  (:map embark-file-map
+	("E" . 'consult-directory-externally))
+  :config
+  ;; 增强 C-x C-h 可以直接执行快捷键		
+  (setq prefix-help-command 'embark-prefix-help-command))
 
-
-(global-company-mode 1)
-;; (setq company-minimum-prefix-length 3)
-(setq company-idle-delay 0.3)
 
 (setq tab-always-indent 'complete)
 
 
-(package-install 'embark-consult)
-(package-install 'wgrep)
-(setq wgrep-auto-save-buffer t)
+(use-package embark-consult
+  :bind
+  (:map minibuffer-local-map ("C-c C-e" . 'embark-export)))
+
+(use-package wgrep
+  :config
+  (setq wgrep-auto-save-buffer t))
 
 (eval-after-load
     'consult
