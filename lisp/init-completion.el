@@ -1,7 +1,7 @@
 (use-package company
   :bind (:map company-active-map
-	      ("C-n" . 'company-select-next)
-	      ("C-p" . 'company-select-previous))
+	      ("C-j" . 'company-select-next)
+	      ("C-k" . 'company-select-previous))
   :init
   (global-company-mode t)
   :config
@@ -33,7 +33,10 @@
 ;; minibuf 出现选择列表
 (use-package vertico
   :init
-  (vertico-mode t))
+  (vertico-mode t)
+  :bind (:map vertico-map
+	      ("C-j" . 'vertico-next)
+	      ("C-k" . 'vertico-previous)))
 
 ;; 优化vertico 支持模糊搜索
 (use-package orderless
@@ -93,5 +96,7 @@
 ;;快捷键
 ;;C-x C-h 查看C-x为前缀的所有快捷键
 
+(use-package which-key :ensure t :defer t
+  :hook (after-init . which-key-mode))
 
 (provide 'init-completion)

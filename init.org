@@ -113,3 +113,8 @@ emacs配置文件加载路径顺序：
        (error
 	(funcall use-package--warning17 :catch err))))
    #+end_src
+
+
+2. 调试方法
+
+** eglot

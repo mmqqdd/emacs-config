@@ -1,7 +1,77 @@
+* git 操作
 ** 使.gitignore生效
 #+begin_src shell
   ~/.emacs.d $ git rm -r –-cached . #清除缓存
   ~/.emacs.d $ git add . #重新按照ignore的规则add所有的文件
   ~/.emacs.d $ git commit -m “update .gitignore” #提交和注释
 #+end_src
+
+** 设置tag
+#+begin_src shell
+  git tag [tagName]   # 创建tag, 名称为tagName
+  git push origin [tagName] #推送到远端仓库
+#+end_src
+
+
+
+
+* org 操作
+** 基本操作
+1. 使用*设置标题级别
+2. 设置任务状态: C-c C-t org-todo
+3. 设置check boxes
+4. 设置开始时间: C-c C-s org-schedule
+5. 设置结束时间: C-c C-d org-deadline
+6. 换行（格式同上一行）：org-mata-return
+7. 设置logbook
+
+** org-agenda操作
+1. 设置持续时间(格式: 00:xx): e org-agenda-set-effort  
+2. 过滤持续时间: _ org-agenda-filter-by-effort
+3. 设置tag: : org-agenda-set-tags 
+
+** 表格操作
+| 操作名   | 指令             | 快捷键      |   |   |
+|----------+------------------+-------------+---+---|
+| 创建表格 | org-table-create | C-c \vert{} |   |   |
+|          |                  |             |   |   |
+
+
+
+
+
+
+
+
+* 用hugo写博客
+
+** 安装 hugo + even主题
+
+**  emacs 安装 ox-hugo
+1. https://github.com/kaushalmodi/ox-hugo
+2.  org 转换成 markdown， author设置
+
+** eglot 
+
+* Workspace
+** Daily routine [0%]                                                 :Learn:
+SCHEDULED: <2023-10-06 五 20:00 +1d>
+:PROPERTIES:
+:RESET_CHECK_BOXES: t
+:LAST_REPEAT: [2023-10-02 一 18:53]
+:END:
+:LOGBOOK: - State "DONE"       from              [2023-10-02 一 18:53]
+- State "DONE"       from              [2023-10-02 一 18:53]
+:END:
+
+- [ ] leetcode
+- [ ] exercise
+- [ ] coding
+** TODO [#A] Learn Emacs                                              :Emacs:
+SCHEDULED: <2023-10-08 日 21:00>
+:PROPERTIES:
+:Effort:   00:30
+:END:
+  
+ [2023-10-07 六 18:49]
 
