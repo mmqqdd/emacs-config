@@ -73,7 +73,9 @@ See `org-capture-templates' for more information."
 
 (eval-after-load 'evil
   '(progn
-     (evil-define-key 'normal org-mode-map (kbd "<tab>") 'org-cycle)))
+     (evil-define-key 'normal org-mode-map (kbd "<tab>") 'org-cycle)
+     (evil-define-key 'normal org-mode-map (kdb "<RET>") 'org-return)))
+
 
 
 (provide 'init-org)

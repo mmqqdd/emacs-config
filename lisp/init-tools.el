@@ -31,6 +31,7 @@ Other buffer group by `awesome-tab-get-group-name' with project name."
   (interactive)
   (if (use-region-p)
       (progn
+	(evil-exit-visual-state)
 	(consult-ripgrep (project-root (project-current))
 			 (buffer-substring (region-beginning) (region-end))))
     (consult-ripgrep)))
@@ -38,7 +39,9 @@ Other buffer group by `awesome-tab-get-group-name' with project name."
 (defun my/search-for-symbol-at-point ()
   (interactive)
   (if (use-region-p)
-      (consult-line (buffer-substring (region-beginning) (region-end)))
+      (progn
+	(evil-exit-visual-state)
+	(consult-line (buffer-substring (region-beginning) (region-end))))
     (consult-line)))
 
 ;; 在visual 模式下，根据选中内容，在 minibuffer自动生成代码

@@ -1,0 +1,777 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2023-10-11 三 14:39 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lrm;</title>
+<meta name="author" content="孟强定" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+</head>
+<body>
+<div id="content" class="content">
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org68ab5d4">1. git 操作</a>
+<ul>
+<li><a href="#org5f891c6">1.1. 使.gitignore生效</a></li>
+<li><a href="#org767f436">1.2. 设置tag</a></li>
+</ul>
+</li>
+<li><a href="#orgc7925e5">2. org 操作</a>
+<ul>
+<li><a href="#org43a12fa">2.1. 基本操作</a></li>
+<li><a href="#org3a2c1e8">2.2. org-agenda操作</a></li>
+<li><a href="#orge08edd2">2.3. 表格操作</a></li>
+<li><a href="#orgf58c090">2.4. 链接操作</a>
+<ul>
+<li><a href="#org11e7b8a">2.4.1. 文件链接</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org25c0a1d">3. 用hugo写博客</a>
+<ul>
+<li><a href="#orgd47d3a6">3.1. 安装 hugo + even主题</a></li>
+<li><a href="#org46e1df2">3.2. emacs 安装 ox-hugo</a></li>
+<li><a href="#orge429b12">3.3. eglot</a></li>
+<li><a href="#org2182f19">3.4. </a></li>
+</ul>
+</li>
+<li><a href="#org1c813c0">4. detail</a>
+<ul>
+<li><a href="#orged66c5a">4.1. org-insert-heading-respect-content</a></li>
+</ul>
+</li>
+<li><a href="#org5b80614">5. Workspace</a>
+<ul>
+<li><a href="#org1284f71">5.1. Daily routine <code>[0%]</code>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="Learn">Learn</span></span></a></li>
+<li><a href="#org4727373">5.2. <span class="todo TODO">TODO</span> Learn Emacs&#xa0;&#xa0;&#xa0;<span class="tag"><span class="Emacs">Emacs</span></span></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org68ab5d4" class="outline-2">
+<h2 id="org68ab5d4"><span class="section-number-2">1.</span> git 操作</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-org5f891c6" class="outline-3">
+<h3 id="org5f891c6"><span class="section-number-3">1.1.</span> 使.gitignore生效</h3>
+<div class="outline-text-3" id="text-1-1">
+<div class="org-src-container">
+<pre class="src src-shell">~/.emacs.d $ git rm -r –-cached . #清除缓存
+~/.emacs.d $ git add . #重新按照ignore的规则add所有的文件
+~/.emacs.d $ git commit -m “update .gitignore” #提交和注释
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org767f436" class="outline-3">
+<h3 id="org767f436"><span class="section-number-3">1.2.</span> 设置tag</h3>
+<div class="outline-text-3" id="text-1-2">
+<div class="org-src-container">
+<pre class="src src-shell">git tag [tagName]   # 创建tag, 名称为tagName
+git push origin [tagName] #推送到远端仓库
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgc7925e5" class="outline-2">
+<h2 id="orgc7925e5"><span class="section-number-2">2.</span> org 操作</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org43a12fa" class="outline-3">
+<h3 id="org43a12fa"><span class="section-number-3">2.1.</span> 基本操作</h3>
+<div class="outline-text-3" id="text-2-1">
+<ol class="org-ol">
+<li>使用*设置标题级别</li>
+<li>设置任务状态: C-c C-t org-todo</li>
+<li>设置check boxes</li>
+<li>设置结束时间: C-c C-d org-deadline</li>
+<li>换行（格式同上一行）：org-mata-return</li>
+<li>设置logbook</li>
+</ol>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">操作名</th>
+<th scope="col" class="org-left">指令</th>
+<th scope="col" class="org-left">快捷键</th>
+<th scope="col" class="org-left">detail</th>
+<th scope="col" class="org-left">&#xa0;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">插入同级标题</td>
+<td class="org-left">org-insert-heading-respect-content</td>
+<td class="org-left">C-RET</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">插入次级标题</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">标题级别变更</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">标题树级别变更</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+<a href="#orged66c5a">4.1</a>
+</p>
+</div>
+</div>
+<div id="outline-container-org3a2c1e8" class="outline-3">
+<h3 id="org3a2c1e8"><span class="section-number-3">2.2.</span> org-agenda操作</h3>
+<div class="outline-text-3" id="text-2-2">
+<ol class="org-ol">
+<li>设置持续时间(格式: 00:xx): e org-agenda-set-effort</li>
+<li>过滤持续时间: _ org-agenda-filter-by-effort</li>
+<li>设置tag: : org-agenda-set-tags</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orge08edd2" class="outline-3">
+<h3 id="orge08edd2"><span class="section-number-3">2.3.</span> 表格操作</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+一定一定要学会使用表格，表格更加直观，可以在表格中增加链接，链接到详细说明处。
+如果使用evil-mode，可能有些快捷键不起作用，但是指令还是可以使用
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">操作名</th>
+<th scope="col" class="org-left">指令</th>
+<th scope="col" class="org-left">快捷键</th>
+<th scope="col" class="org-left">备注</th>
+<th scope="col" class="org-left">其他</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">基础操作</td>
+<td class="org-left">创建表格</td>
+<td class="org-left">org-table-create</td>
+<td class="org-left">C-c &vert;</td>
+<td class="org-left">可以指定表格大小比如 4x3</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">遍历表格</td>
+<td class="org-left">org-cycle</td>
+<td class="org-left">TAB</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">反向遍历</td>
+<td class="org-left">org-shiftab</td>
+<td class="org-left">S-TAB</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">插入行</td>
+<td class="org-left">org-table-insert-row</td>
+<td class="org-left">RET</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">插入分隔行</td>
+<td class="org-left">org-table-insert-hline</td>
+<td class="org-left">C-c -</td>
+<td class="org-left">org-ctrl-c-minus</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">插入列</td>
+<td class="org-left">org-table-insert-column</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">整行上移</td>
+<td class="org-left">org-metaup</td>
+<td class="org-left">M-&lt;up&gt;</td>
+<td class="org-left">up为向向上键</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">整行下移</td>
+<td class="org-left">org-metadown</td>
+<td class="org-left">M-&lt;down&gt;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">整列左移</td>
+<td class="org-left">org-metaleft</td>
+<td class="org-left">M-&lt;left&gt;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">整列右移</td>
+<td class="org-left">org-metaright</td>
+<td class="org-left">M-&lt;right&gt;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">当前内容下移</td>
+<td class="org-left">org-meta-return</td>
+<td class="org-left">M-RET</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">进阶操作</td>
+<td class="org-left">插入静态时间戳</td>
+<td class="org-left">org-time-stamp-inactive</td>
+<td class="org-left">C-c !</td>
+<td class="org-left">时间戳不会改变</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">插入动态时间戳</td>
+<td class="org-left">org-time-stamp</td>
+<td class="org-left">C-c .</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-orgf58c090" class="outline-3">
+<h3 id="orgf58c090"><span class="section-number-3">2.4.</span> 链接操作</h3>
+<div class="outline-text-3" id="text-2-4">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">操作名</th>
+<th scope="col" class="org-left">指令</th>
+<th scope="col" class="org-left">快捷键</th>
+<th scope="col" class="org-left">备注</th>
+<th scope="col" class="org-left">&#xa0;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">创建链接</td>
+<td class="org-left">org-insert-link</td>
+<td class="org-left">C-c C-l</td>
+<td class="org-left">可以直接按照格式写</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">展开链接</td>
+<td class="org-left">org-toggle-link-display</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">跳转到链接</td>
+<td class="org-left">org-open-at-point</td>
+<td class="org-left">C-c C-o</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">补全</td>
+<td class="org-left">completion-at-point</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">[[*]特殊操作</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div id="outline-container-org11e7b8a" class="outline-4">
+<h4 id="org11e7b8a"><span class="section-number-4">2.4.1.</span> 文件链接</h4>
+<div class="outline-text-4" id="text-2-4-1">
+<p>
+我第一次想用链接，是在使用表格的时候，表格的有点是直观，缺点就是可容纳信息较少，所以我想着，把
+复杂的内容单独写在一个headline中，在增加一个链接方便跳转。
+网上的资料大都不太全，所以最终还是找到官方文档：
+</p>
+<ol class="org-ol">
+<li><a href="https://orgmode.org/manual/Link-Format.html">https://orgmode.org/manual/Link-Format.html</a></li>
+<li><a href="https://orgmode.org/manual/Internal-Links.html">https://orgmode.org/manual/Internal-Links.html</a></li>
+<li><a href="https://orgmode.org/manual/Search-Options.html">https://orgmode.org/manual/Search-Options.html</a></li>
+</ol>
+
+<p>
+如果从来没用用过 org-mode 的 Hyperlinks可以先看第一篇文章。
+简单来说链接其实就是特殊的纯文本：
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">[[LINK][DESCRIPTION]]
+
+举例：
+1. [[http://www.baidu.com][这个链接会指向百度]]
+2. [[file::~/code/main.cc][这个链接指向一个本地文件]]
+</pre>
+</div>
+<p>
+"LINK" 表示链接内容， DESCRIPTION 为用来展示的名字, 跳转是通过指令org-open-at-point。
+</p>
+
+<p>
+紧接着第二篇文章，就讲了内部链接，我没太看懂，而且实践也没有成功。
+这里简单总结一下，说不定以后就能明白了：
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">主要格式为以下三种
+1. [[#my-custom-id]]
+2. [[*some section]]
+3. [[target]] 
+</pre>
+</div>
+<p>
+三种格式，
+my-custom-id应该是一种特定的id,但是我不知道怎么设置
+</p>
+
+<p>
+*some section 就是指一个标题(headline)，文章里还提到了一种简单写法，即先写括号和星号,然后按 M-TAB,
+所有的标题就会出现在一个 buffer 中，然后选择想要的即可。
+原文：
+To insert a link targeting a headline, in-buffer completion can be used. Just type a star followed by a few optional letters into the buffer and press M-TAB.
+All headlines in the current buffer are offered as completions.
+</p>
+
+<p>
+第三种格式，target 即表示一个标记，只要在两个尖括号你的内容都可以是一个标记
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">比如这篇文章有如下两行：
+&lt;&lt;这是一个标记&gt;&gt;
+[[这是一个标记]]  那么这个链接就会跳到上面那一行
+</pre>
+</div>
+<p>
+但是我没有成功过。
+</p>
+
+<p>
+第三篇文章讲的是文件链接，其实内部链接也是文件链接的一种，我尝试了一下，确实可行。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-org">举例：
+[[file:~/code/main.c::255]]
+[[file:~/xx.org::My Target]]
+[[file:~/xx.org::*My Target]]
+[[file:~/xx.org::#my-custom-id]]
+[[file:~/xx.org::/regexp/]]
+[[attachment:main.c::255]]
+</pre>
+</div>
+<p>
+主要是多了一个file前缀，应该很好理解，那么我想链接到当前文件的某个标题可以这样：
+</p>
+<div class="org-src-container">
+<pre class="src src-org">* headline1
+** 1.1
+** 1.2
+** 这是 1.3
+* headline2
+** 2.1
+
+[[file:::1.1]]  这个会跳转到  "标题1.1"
+[[file:::这是 1.3]] 这个会跳转到标题 "这是 1.3"
+</pre>
+</div>
+
+<p>
+最终发现其实很简单，不过目前也只会跳转到标题，其他的花里胡哨的功能还不会
+</p>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+<div id="outline-container-org25c0a1d" class="outline-2">
+<h2 id="org25c0a1d"><span class="section-number-2">3.</span> 用hugo写博客</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-orgd47d3a6" class="outline-3">
+<h3 id="orgd47d3a6"><span class="section-number-3">3.1.</span> 安装 hugo + even主题</h3>
+</div>
+
+<div id="outline-container-org46e1df2" class="outline-3">
+<h3 id="org46e1df2"><span class="section-number-3">3.2.</span> emacs 安装 ox-hugo</h3>
+<div class="outline-text-3" id="text-3-2">
+<ol class="org-ol">
+<li><a href="https://github.com/kaushalmodi/ox-hugo">https://github.com/kaushalmodi/ox-hugo</a></li>
+<li>org 转换成 markdown， author设置</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orge429b12" class="outline-3">
+<h3 id="orge429b12"><span class="section-number-3">3.3.</span> eglot</h3>
+</div>
+
+<div id="outline-container-org2182f19" class="outline-3">
+<h3 id="org2182f19"><span class="section-number-3">3.4.</span> </h3>
+</div>
+</div>
+
+<div id="outline-container-org1c813c0" class="outline-2">
+<h2 id="org1c813c0"><span class="section-number-2">4.</span> detail</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-orged66c5a" class="outline-3">
+<h3 id="orged66c5a"><span class="section-number-3">4.1.</span> org-insert-heading-respect-content</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+这个指令会插入同级标题，会往上找到距离当前光标最近的标题，然后插入同级标题。
+大家可以自行尝试，在文章的一级/二级/ 三级标题处，正文处分别按下C-RET 快捷键盘看看效果。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5b80614" class="outline-2">
+<h2 id="org5b80614"><span class="section-number-2">5.</span> Workspace</h2>
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-org1284f71" class="outline-3">
+<h3 id="org1284f71"><span class="section-number-3">5.1.</span> Daily routine <code>[0%]</code>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="Learn">Learn</span></span></h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+:LOGBOOK: - State "DONE"       from              <span class="timestamp-wrapper"><span class="timestamp">[2023-10-02 一 18:53]</span></span>
+</p>
+<ul class="org-ul">
+<li>State "DONE"       from              <span class="timestamp-wrapper"><span class="timestamp">[2023-10-02 一 18:53]</span></span></li>
+</ul>
+<p>
+:END:
+</p>
+
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> leetcode</li>
+<li class="off"><code>[&#xa0;]</code> exercise</li>
+<li class="off"><code>[&#xa0;]</code> coding</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org4727373" class="outline-3">
+<h3 id="org4727373"><span class="section-number-3">5.2.</span> <span class="todo TODO">TODO</span> Learn Emacs&#xa0;&#xa0;&#xa0;<span class="tag"><span class="Emacs">Emacs</span></span></h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2023-10-07 六 18:49]</span></span>
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: 孟强定</p>
+<p class="date">Created: 2023-10-11 三 14:39</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
