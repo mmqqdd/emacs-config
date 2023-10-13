@@ -23,7 +23,8 @@
         (add-hook 'pre-command-hook 'keycast--update t)
       (remove-hook 'pre-command-hook 'keycast--update)))
   (add-to-list 'global-mode-string '("" keycast-mode-line))
-  (keycast-mode t))
+  (keycast-mode t)
+  (keycast-tab-bar-mode t))
 
 
 (use-package consult)

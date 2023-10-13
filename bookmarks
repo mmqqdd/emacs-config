@@ -3,9 +3,9 @@
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("org-capture-last-stored"
- (filename . "~/study/blog/all-blog.org")
- (front-context-string . "** DONE Second T")
- (rear-context-string . "g\"\n*** heading3\n")
- (position . 419)
- (last-modified 25891 41985 324526 0))
+ (filename . "~/Library/Mobile Documents/com~apple~CloudDocs/workspace/gtd/brainstorming.org")
+ (front-context-string . "** TODO [#B] 应对无")
+ (rear-context-string . "E: 头脑风暴\n* Idea\n\n")
+ (position . 257)
+ (last-modified 25896 38642 802672 0))
 )

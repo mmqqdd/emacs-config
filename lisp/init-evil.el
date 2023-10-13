@@ -99,11 +99,18 @@ Create prefix map: +general-global-NAME. Prefix bindings in BODY with INFIX-KEY.
     "hc" 'zilongshanren/clearn-highlight
     "hv" 'describe-variable
     "hk" 'describe-key
-    "/" 'my/search-project-for-symbol-at-point
+    "/" '(my/search-project-for-symbol-at-point :which-key "项目中搜索")
     )
 
   (+general-global-menu! "search" "s"
     "b" 'my/search-for-symbol-at-point)
+
+  (+general-global-menu! "file" "f"
+    "p" 'open-init-file
+    "f" 'find-file
+    "y" '(my/copy-current-buffer-file-path :which-key "copy-file-path")
+    "d" '(my/copy-current-directory-to-clipboard :which-key "copy-dir-path"))
+
   (+general-global-menu! "buffer" "b"
     "s" 'my/search-for-symbol-at-point
     "d" 'kill-current-buffer
@@ -119,6 +126,45 @@ Create prefix map: +general-global-NAME. Prefix bindings in BODY with INFIX-KEY.
     "k" 'kill-buffer
     "y" 'copy-buffer-name
     "K" 'kill-other-buffers))
+
+
+(+general-global-menu! "window" "w"
+  "d" '(delete-window :which-key "关闭窗口")
+  "/" '(split-window-right :which-key "右分屏")
+  "-" '(split-window-below :which-key "下分屏")
+  "h" '(evil-window-left :which-key "左移")
+  "j" '(evil-window-down :which-key "下移")
+  "k" '(evil-window-up :which-key "上移")
+  "l" '(evil-window-right :which-key "右移")
+  "H" '(buf-move-left :which-key "界面左移")
+  "J" '(buf-move-down :which-key "界面下移")
+  "K" '(buf-move-up :which-key "界面上移")
+  "L" '(buf-move-right :which-key "界面右移")
+  "x" 'resize-window
+  "u" 'winner-undo
+  "r" 'winner-redo
+  "o" 'delete-other-windows
+  "=" 'balance-windows-area)
+
+(+general-global-menu! "layout" "l"
+  "l" 'tab-bar-switch-to-next-tab
+  "h" 'tab-bar-switch-to-prev-tab
+  "L" 'tabspaces-restore-session
+  "p" 'tabspaces-open-or-create-project-and-workspace
+  "f" 'tabspaces-project-switch-project-open-file
+  "s" 'tabspaces-save-session
+  "B" 'tabspaces-switch-buffer-and-tab
+  "b" 'tabspaces-switch-to-buffer
+  "R" 'tab-rename
+  "TAB" 'tab-bar-switch-to-recent-tab
+  "r" 'tabspaces-remove-current-buffer
+  "k" 'tabspaces-close-workspace)
+
+(+general-global-menu! "project" "p"
+  "p" '(tabspaces-open-or-create-project-and-workspace :which-key "open-project"))
+
+(+general-global-menu! "open" "o"
+  "p" 'treemacs)
 
 ;; 选中单词，R，批量操作所有相同单词
 (use-package iedit

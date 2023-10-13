@@ -47,9 +47,34 @@ Doom Emacs已经给你配置好了很多东西，你几乎不需要配置，马�
 这次学习的宗旨：
 1. 所有视频全部过一遍，尽量简单，不要自己下载视频中没提到的包。
 2. 每个视频做总结
-
+3. 先记关键字，看完再做详细总结
 
 
 ** day12
 
+** day15
+1. treesit-auto
+   用于补全
+2. eldoc
+   用于显示变量、函数的具体信息
+3. xref-find-definition  xref-find-refence
+   用于定义和引用见的跳转
+   evil-goto-definition 会调用 xref-find-definition 用edebug可以验证
+4. yasnippet
+   用于补全，貌似没啥用
+5. ff-find-related-file
+   查找相关文件，比如 buffer.cpp 跳转到 buffer.h
 
+** day16
+1. window-numbering
+   给每个窗口分配一个号码，方便跳转，感觉没啥用
+2. es-window
+   以数字的形式操作窗口，用起来有点复杂，先不用
+3. buffer-move
+   移动 buffer 的位置
+4. resize-window
+   改变 window 的大小等功能，感觉有点鸡肋，可以不用
+5. winner
+   可以在一个和多个窗口间切换，感觉用处不大
+6. popper
+   可以方便切换特殊的buffer

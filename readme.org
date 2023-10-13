@@ -1,4 +1,12 @@
 #+STARTUP: indent
+#+hugo_base_dir: /Users/mengqiangding/study/blog/
+#+hugo_section: post
+#+hugo_auto_set_lastmod: t
+#+hugo_code_fence: nil
+#+options: author:nil
+#+hugo_custom_front_matter: :author "mengqiangding"
+#+STARTUP: logdrawer
+#+TITLE: emacs学习记录
 * git 操作
 ** 使.gitignore生效
 #+begin_src shell
@@ -15,6 +23,9 @@
 
 
 * org 操作
+** 手册
+1. [[https://orgmode.org/manual/index.html][The Org Manual]]
+2. aa
 ** 基本操作
 1. 使用*设置标题级别
 2. 设置任务状态: C-c C-t org-todo
@@ -22,16 +33,20 @@
 5. 设置结束时间: C-c C-d org-deadline
 6. 换行（格式同上一行）：org-mata-return
 7. 设置logbook
-| 操作名         | 指令                               | 快捷键 | detail |   |
-|----------------+------------------------------------+--------+--------+---|
-| 插入同级标题   | org-insert-heading-respect-content | C-RET  |        |   |
-| 插入次级标题   |                                    |        |        |   |
-| 标题级别变更   |                                    |        |        |   |
-| 标题树级别变更 |                                    |        |        |   |
+| 操作名       | 指令                               | 快捷键    | detail  |   |
+|--------------+------------------------------------+-----------+---------+---|
+| 插入同级标题 | org-insert-heading-respect-content | C-RET     | [[*org-insert-heading-respect-content][org-ins]] |   |
+| 插入次级标题 | org-insert-subheading              |           |         |   |
+| 标题降级     | org-metaleft                       | M-<left>  |         |   |
+| 标题升级     | org-metaright                      | M-<right> |         |   |
+| 标题树降级   | org-demote-subtree                 | C-c C->   |         |   |
+| 标题树升级   | org-promote-subtree                | C-c C-<   |         |   |
+** org 特殊字符表示
+| 字符 | 表示法  |   |
+|------+---------+---|
+| 竖线 | \vert{} |   |
 
-[[file:::*org-insert-heading-respect-content]]
-[[*org-insert-heading-respect-content]]
-** org-agenda操作
+** org-agenda操作 
 1. 设置持续时间(格式: 00:xx): e org-agenda-set-effort  
 2. 过滤持续时间: _ org-agenda-filter-by-effort
 3. 设置tag: : org-agenda-set-tags 
@@ -55,7 +70,8 @@
 |----------+----------------+-------------------------+-------------+--------------------------+------|
 | 进阶操作 | 插入静态时间戳 | org-time-stamp-inactive | C-c !       | 时间戳不会改变           |      |
 |          | 插入动态时间戳 | org-time-stamp          | C-c .       |                          |      |
-|          |                |                         |             |                          |      |
+|          | 折叠列         | org-ctrl-c-tab          | C-c TAB     |                          |      |
+|          | 删除列         | org-table-delete-column |             |                          |      |
 ** 链接操作
 | 操作名     | 指令                    | 快捷键  | 备注               |   |
 |------------+-------------------------+---------+--------------------+---|
@@ -83,7 +99,7 @@
 #+end_src
 "LINK" 表示链接内容， DESCRIPTION 为用来展示的名字, 跳转是通过指令org-open-at-point。
 
-紧接着第二篇文章，就讲了内部链接，我没太看懂，而且实践也没有成功。
+紧接着第二篇文章，就讲了内部链接，我没太看懂，而且实践也没有成功。(补充：重启之后成功了)
 这里简单总结一下，说不定以后就能明白了：
 #+begin_src shell
   主要格式为以下三种
@@ -133,7 +149,15 @@ All headlines in the current buffer are offered as completions.
 #+end_src
 
 最终发现其实很简单，不过目前也只会跳转到标题，其他的花里胡哨的功能还不会
-
+** task & subtask & checkbox 
+通用操作
+| 操作          | 指令                    | 快捷键   |   |   |
+|---------------+-------------------------+----------+---+---|
+| 类型变更      | org-shiftleft           | S-<left> |   |   |
+|               | org-shifup              | S-<up>   |   |   |
+| 计算          | org-ctrl-c-ctrl-c       | C-c C-c  |   |   |
+| 变更 checkbox | org-toggle-checkbox     | C-c C-c  |   |   |
+| 插入checkbox  | org-insert-todo-heading | M-S-RET  |   |   |
 
 
 
@@ -153,6 +177,11 @@ All headlines in the current buffer are offered as completions.
 ** org-insert-heading-respect-content
 这个指令会插入同级标题，会往上找到距离当前光标最近的标题，然后插入同级标题。
 大家可以自行尝试，在文章的一级/二级/ 三级标题处，正文处分别按下C-RET 快捷键盘看看效果。
+** org-shiftleft
+这个指令针对不同的内容会有不同的表现效果
+1. 标题：TODO -> DONE
+2. checklist: 样式变更
+3. 时间戳：更新时间戳
 
 * Workspace
 ** Daily routine [0%]                                                 :Learn:
@@ -175,4 +204,3 @@ SCHEDULED: <2023-10-08 日 21:00>
 :END:
   
  [2023-10-07 六 18:49]
-

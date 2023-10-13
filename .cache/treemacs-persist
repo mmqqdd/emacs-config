@@ -1,0 +1,22 @@
+* Default
+** .emacs.d
+ - path :: ~/.emacs.d
+** algorithm
+ - path :: ~/Library/Mobile Documents/com~apple~CloudDocs/workspace/algorithm
+** muduo
+ - path :: ~/local_workspace/moduo/muduo
+* No Perspective
+** mengqiangding
+ - path :: ~
+* Tab *scratch*
+** mengqiangding
+ - path :: ~
+* Tab muduo
+** muduo
+ - path :: ~/local_workspace/moduo/muduo
+* Tab .emacs.d
+** .emacs.d
+ - path :: ~/.emacs.d
+* Tab gtd
+** gtd
+ - path :: ~/Library/Mobile Documents/com~apple~CloudDocs/workspace/gtd

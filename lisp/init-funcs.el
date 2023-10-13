@@ -38,9 +38,29 @@ Supports exporting consult-grep to wgrep, file to wdeired, and consult-location 
 		  (file-name-directory (expand-file-name file)))))
 
 
-;;打开当前文件的目录
 (defun my-open-current-directory()
+  ;;open current directory
   (interactive)
   (consult-directory-externally default-directory))
+
+(defun my/copy-current-buffer-file-path ()
+  "Copy the full path of the file associated with the current buffer to the clipboard."
+  (interactive)
+  (if (buffer-file-name)
+      (let ((path (file-truename (buffer-file-name))))
+        (progn
+          (kill-new path)
+          (message (format "File path copied to clipboard: %s" path))))
+    (error "Buffer is not visiting a file.")))
+
+(defun my/copy-current-directory-to-clipboard ()
+  "Copy the current directory to the clipboard."
+  (interactive)
+  (let ((current-directory default-directory))
+    (with-temp-buffer
+      (insert current-directory)
+      (clipboard-kill-region (point-min) (point-max)))
+    (message "Current directory copied to clipboard: %s" current-directory)))
+
 
 (provide 'init-funcs)

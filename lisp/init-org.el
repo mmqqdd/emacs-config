@@ -24,14 +24,18 @@
 ;; M-x org-set-properties , 设置属性， RESET_CHECK_BOXES: t 可以重置 check boxes 
 
 (global-set-key (kbd "C-c a") 'org-agenda)
-(setq org-agenda-files '("~/.emacs.d/readme.org" ))
+(setq org-agenda-files '("~/workspace/gtd/diary.org" "~/workspace/gtd/brainstorming.org"))
 
 
 
 (setq org-capture-templates
-      '(("t" "Todo" entry (file+headline "~/.emacs.d/readme.org" "Workspace")
+      '(("t" "Todo" entry (file+headline "~/workspace/gtd/diary.org" "TodoList")
 	 "* TODO [#B] %?\n  %i\n %U"
-	 :empty-lines 1)))
+	 :empty-lines 1)
+	("b" "BrainStorming" entry (file+headline "~/workspace/gtd/brainstorming.org" "Idea")
+	 "* TODO [#B] %?\n  %i\n %U"
+	 :empty-lines 1)
+	))
 
 (global-set-key (kbd "C-c r") 'org-capture)
 
@@ -69,13 +73,13 @@ See `org-capture-templates' for more information."
 		 ;; and that it has a "Blog Ideas" heading. It can even be a
 		 ;; symlink pointing to the actual location of all-posts.org!
 		 (file+headline "/Users/mengqiangding/study/blog/all-blog.org" "Blog Ideas")
-		 (function org-hugo-new-subtree-post-capture-template))))
+			    (function org-hugo-new-subtree-post-capture-template))))
 
 (eval-after-load 'evil
   '(progn
      (evil-define-key 'normal org-mode-map (kbd "<tab>") 'org-cycle)
-     (evil-define-key 'normal org-mode-map (kdb "<RET>") 'org-return)))
+     (evil-define-key 'normal org-mode-map (kbd "<RET>") 'org-open-at-point)))
 
-
+(setq org-startup-indented t)
 
 (provide 'init-org)

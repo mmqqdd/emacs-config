@@ -197,3 +197,11 @@
 ;; 调用示例
 (convert-to-lunar-date 2023 10 8)
 
+(defun my/get-current-buffer-file-path ()
+  "Return the full path of the file associated with the current buffer."
+  (interactive)
+  (if (buffer-file-name)
+      (file-truename (buffer-file-name))
+    (error "Buffer is not visiting a file.")))
+
+(message (get-current-buffer-file-path))
