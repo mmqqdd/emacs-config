@@ -15,7 +15,7 @@ cnfonts/
 chatgpt/
 .org-id-locations
 tabsession.el
-#.*
+.#*
 bookmarks/
 main
 tree-sitter/
