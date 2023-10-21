@@ -1,0 +1,120 @@
+** package
+This is a sample code snippets.
+#+begin_src emacs-lisp
+  (setq awesome-tab-height 10)
+#+end_src
+
+
+** emacs 基本知识和配置
+以前总是看别人的文档，然后各种吐槽，写的太晦涩，写的太浅显，已经过时了。。。 等到自己写，才发现，想写的简单又正确是一件很难很难的事。
+我想已一个初学者的身份，按照重要程度的顺序，来介绍学习emacs需要掌握的基本知识。
+1. emacs 只是一个软件
+2. emacs 可以通过写配置文件来指定emacs所有属性（只要你懂emacs lisp）
+3. emacs 启动后，每个按键，每次鼠标点击，都对应一个elisp函数
+4. emacs 启动后，用户可以直接修改所有的函数和变量（也就是说你任何操作，你都可以立刻马上修改）
+
+*** 配置文件加载路径和规则
+我第一次了解到配置文件是在学习Linux操作系统的时候，当时修改PATH，需要加入到～/.profile 文件下。我当时最大的疑问是，操作系统怎么知道去哪找配置文件。现在想来其实很简单，配置文件的路径就是写死在代码里面的，用户没法直接修改的。而配置文件里面的内容
+可以让用户更好地定制软件（操作系统也可以看成一个很大的软件）。
+
+emacs配置文件加载路径顺序：
+1. ～/.emacs
+2. ~/.emacs.el
+3. ~/.emacs.d/init.el
+4. ~/.config/emacs/init.el
+
+当启动emacs时，emacs会自动依次寻找以上文件之一作为配置文件（一旦找到其中之一，就不会继续往下搜索配置文件了）。
+每次想写点什么，总感觉自己写的太啰嗦，又不太准确，感觉就是在抄别人的文档。
+想要深入理解可以看看：https://www.gnu.org/software/emacs/manual/html_node/emacs/Find-Init.html
+
+对于配置文件我会有几个问题：
+1. 配置文件只有上述的四种路径吗？有没有可能发生变化？发生变化了怎么知道？
+2. doom emacs 貌似是在~/.emacs.d下，但是没有init.el, 只有early-init.el 这是怎么找到的？
+3. 配置文件只能是用emacs lisp语言配置吗？
+
+*** 利用内置的包，做一些简单的配置
+对于初学者，突然冒出来一个配置文件的概念。这时候一定不要再灌输过多的概念了，尽量简化内容，不要引入一大堆东西。
+我们想要什么样的配置？ 对于初学者，其实根本不知道自己想要什么样的配置？
+
+*** 下载一些简单的包
+1. 从哪下载？
+2. 下载到哪？
+3. 如何加载包？配置快捷键？需要理解的包的基础知识？major mode？minor mode？ define-key？
+4. 包是什么？没有包会怎么样？
+5. 从0到1写一个简单的包。
+   对于包的内容，最好的理解方式，一定是带着写一个简单的包，然后去加载包，使用包，先有一个直观的认识，再去考虑怎么用别人的包？
+
+*** 通过下载的包总结一下我们需要这些包达到一个怎样的效果
+这个标题有点抽象，简单来说，一开始你不知道要达到什么效果，现在我带着你下载了这么多包，然后你也看到效果，那我们来总结，对这些效果进行分类。
+
+1. 文件查找
+2. 单文本编辑、查找、替换
+3. 多文本编辑
+
+
+** 从零开始研读emacs lisp代码
+1. 宏扩展
+   如下使用
+   #+begin_src elisp
+     (pp (macroexpand '(use-package company)))
+   #+end_src
+   C-c C-c 计算结果
+   #+RESULTS:
+   #+begin_src elisp
+	(progn
+	  (use-package-ensure-elpa 'company
+				   '(t)
+				   'nil)
+	  (defvar use-package--warning14
+	    #'(lambda
+		(keyword err)
+		(let
+		    ((msg
+		      (format "%s/%s: %s" 'company keyword
+			      (error-message-string err))))
+		  (display-warning 'use-package msg :error))))
+	  (condition-case-unless-debug err
+	      (if
+		  (not
+		   (require 'company nil t))
+		  (display-warning 'use-package
+				   (format "Cannot load %s" 'company)
+				   :error))
+	    (error
+	     (funcall use-package--warning14 :catch err))))
+   #+end_src
+   
+   #+begin_src elisp
+     (pp (macroexpand '(use-package saveplace
+       :ensure nil
+       :hook (after-init . save-place-mode))))
+   #+end_src 
+
+   #+RESULTS:
+   #+begin_src elisp
+   (progn
+     (use-package-ensure-elpa 'saveplace
+			      '(nil)
+			      'nil)
+     (defvar use-package--warning17
+       #'(lambda
+	   (keyword err)
+	   (let
+	       ((msg
+		 (format "%s/%s: %s" 'saveplace keyword
+			 (error-message-string err))))
+	     (display-warning 'use-package msg :error))))
+     (condition-case-unless-debug err
+	 (progn
+	   (unless
+	       (fboundp 'save-place-mode)
+	     (autoload #'save-place-mode "saveplace" nil t))
+	   (add-hook 'after-init-hook #'save-place-mode))
+       (error
+	(funcall use-package--warning17 :catch err))))
+   #+end_src
+
+
+2. 调试方法
+
+** eglot

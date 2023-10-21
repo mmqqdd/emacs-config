@@ -1,0 +1,59 @@
+;;;; Emacs Bookmark Format Version 1;;;; -*- coding: utf-8-emacs; mode: lisp-data -*-
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("1"
+ (filename . "~/.emacs.d/lisp/init-org.el")
+ (front-context-string . "k\n          (lam")
+ (rear-context-string . "-agenda-mode-hoo")
+ (position . 7320)
+ (last-modified 25907 11577 735300 0))
+("go-learn"
+ (filename . "~/workspace/go-learning/readme.org")
+ (front-context-string . "\n\n** 第八章 Gorouti")
+ (rear-context-string . "canWords非常的有用。 \n")
+ (position . 1413)
+ (last-modified 25900 45389 832541 0))
+("workflow.org"
+ (filename . "~/workspace/philosophy/my_workflow.org")
+ (front-context-string)
+ (rear-context-string . "\n*** 通过执行时间设置高度\n")
+ (position . 1216)
+ (last-modified 25899 16799 11506 0))
+("diary.org"
+ (filename . "~/workspace/gtd/diary.org")
+ (front-context-string . "23-10-14 六>\n\n** ")
+ (rear-context-string . " 0:00\n:END:\n <20")
+ (position . 3645)
+ (last-modified 25898 45077 616320 0))
+("org-el"
+ (filename . "~/.emacs.d/lisp/init-org.el")
+ (front-context-string . "-commands\n      ")
+ (rear-context-string . "rg-agenda-custom")
+ (position . 4786)
+ (last-modified 25899 25364 480191 0))
+("evil"
+ (filename . "~/.emacs.d/lisp/init-evil.el")
+ (front-context-string . "\n  (+general-glo")
+ (rear-context-string . "load-clipboard)\n")
+ (position . 3411)
+ (last-modified 25898 26972 721406 0))
+("org-agenda"
+ (filename . "~/.emacs.d/readme.org")
+ (front-context-string . "** org-agenda操作 ")
+ (rear-context-string . " \\vert{} |   |\n\n")
+ (position . 1516)
+ (last-modified 25898 26454 772381 0))
+("init-ui.el"
+ (filename . "~/.emacs.d/lisp/init-ui.el")
+ (front-context-string . "t\" . treemacs-fi")
+ (rear-context-string . "      (\"C-x t C-")
+ (position . 10351)
+ (last-modified 25897 20338 128094 0))
+("org-capture-last-stored"
+ (filename . "~/workspace/gtd/diary.org")
+ (front-context-string . "** TODO [#C] goo")
+ (rear-context-string . "10-21 六 09:33]\n\n")
+ (position . 5218)
+ (last-modified 25907 12332 361279 0))
+)
