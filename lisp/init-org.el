@@ -400,29 +400,6 @@ end tell"
               (message "Event added to calendar."))
           (message "The current line does not have a scheduled timestamp or is not a heading."))))))
 
-(defface org-bold
-    '((t :foreground "black"
-       :background "#fefefe"
-       :weight bold
-       :underline (:color "red" :style line :position 9)
-       :overline nil))
-    "Face for org-mode bold."
-    :group 'org-faces )
-
-  (setq org-emphasis-alist
-        '(("*" org-bold)
-          ("/" italic)
-          ("_" underline)
-          ("=" ;; (:background "maroon" :foreground "white")
-           org-verbatim verbatim)
-          ("~" ;; (:background "deep sky blue" :foreground "MidnightBlue")
-           org-code verbatim)
-          ("+" (:strike-through t))))
-
-  ;; Because spacemacs had different ideas about the verbatim background
-  (set-face-background 'org-bold "#fefefe")
-  (set-face-background 'org-verbatim "#fefefe")
-
   ;; 完成任务时, 将其划线勾掉
   (set-face-attribute 'org-headline-done nil :strike-through t)
 

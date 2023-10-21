@@ -341,5 +341,37 @@ Main data structure of the dispatcher with the form:
     (setq alpha-list (cdr (append alpha-list (list h))))
     )
 )
+
+(use-package rainbow-mode
+  :ensure t  ; 自动从 package archive 安装 rainbow-mode 如果它还没有被安装
+  :hook      ; 配置钩子，使得 rainbow-mode 在特定的模式下自动启用
+  (prog-mode . rainbow-mode) ; 在所有编程模式下启用 rainbow-mode
+  :config    ; 配置区域
+  ;; 这里可以放置任何你想要的额外配置
+  )
+
+(defface org-bold
+    '((t :foreground "#fefefe"
+       :background "red"
+       :weight bold
+       :underline (:color "red" :style line :position 9)
+       :overline nil))
+    "Face for org-mode bold."
+    :group 'org-faces )
+
+  (setq org-emphasis-alist
+        '(("*" org-bold)
+          ("/" italic)
+          ("_" underline)
+          ("=" ;; (:background "maroon" :foreground "black")
+           org-verbatim verbatim)
+          ("~" ;; (:background "deep sky blue" :foreground "MidnightBlue")
+           org-code verbatim)
+          ("+" (:strike-through t))))
+
+  ;; Because spacemacs had different ideas about the verbatim background
+  ;; (set-face-background 'org-bold "#red")
+  ;; (set-face-background 'org-verbatim "#red")
+
 (provide 'init-ui)
 

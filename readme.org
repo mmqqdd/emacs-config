@@ -276,6 +276,53 @@ Nerd Fonts 是一个使用大量字体图标来解决程序员在开发过程中
    #+DOWNLOADED: screenshot @ 2023-10-21 11:18:47
    [[file:pictures/2023-10-21_11-18-47_screenshot.jpg]]
 4. 配置完毕，直接关闭 buffer 就行。
+** 颜色配置
+*** 显示颜色
+ rainbow-mode 是一个有用的包，能够在 Emacs 中直接显示颜色代码的颜色。
+ 以下是如何使用 use-package 来下载和配置 rainbow-mode：
+
+   #+BEGIN_SRC emacs-lisp
+   (use-package rainbow-mode
+     :ensure t
+     :hook (prog-mode . rainbow-mode))
+   #+END_SRC
+*** 基础颜色配置
+Emacs 允许用户自定义界面的颜色，包括背景色、前景色以及文本和语法高亮的颜色。以下是一些基本的配置方法：
+
+   1. 设置背景和前景色
+      #+BEGIN_SRC emacs-lisp
+      (set-background-color "#000000")
+      (set-foreground-color "#FFFFFF")
+      #+END_SRC
+
+   2. 配置语法高亮的颜色
+      我们也可以通过自定义 face 来设置语法高亮的颜色。
+      #+BEGIN_SRC emacs-lisp
+      (custom-set-faces
+       '(font-lock-comment-face ((t (:foreground "#FF0000")))))
+      #+END_SRC
+*** Org mode 中的特殊格式颜色配置
+   在 Org mode 中，我们经常需要使用加粗、斜体、删除线等格式。我们可以自定义这些格式的颜色以达到更好的视觉效果。
+
+   以下是一些例子：
+
+   1. 自定义加粗文本的颜色
+      #+BEGIN_SRC emacs-lisp
+      (custom-set-faces
+       '(org-bold ((t (:foreground "#FF0000" :weight bold)))))
+      #+END_SRC
+
+   2. 自定义斜体文本的颜色
+      #+BEGIN_SRC emacs-lisp
+      (custom-set-faces
+       '(org-italic ((t (:foreground "#00FF00" :slant italic)))))
+      #+END_SRC
+
+   3. 自定义删除线文本的颜色
+      #+BEGIN_SRC emacs-lisp
+      (custom-set-faces
+       '(org-headline-done ((t (:foreground "#CCCCCC" :strike-through t)))))
+      #+END_SRC
 
 
 * detail
