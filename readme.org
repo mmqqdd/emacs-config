@@ -10,13 +10,39 @@
 * git 操作
 ** 使.gitignore生效
 #+begin_src shell
-
-
   ~/.emacs.d $ git add .gitignore #添加对.gitignore的修改
   ~/.emacs.d $ git rm -r –-cached . #清除缓存
+  ~/.emacs.d $ git rm [要删除的文件或目录] #这一步可以把已经提交过的文件删除
   ~/.emacs.d $ git add . #重新按照ignore的规则add所有的文件
   ~/.emacs.d $ git commit -m “update .gitignore” #提交和注释
 #+end_src
+
+如果你需要从 Git 仓库中批量删除很多文件，并且这些文件都已经被添加到 .gitignore 文件中，你可以使用 =git clean= 命令结合一些选项来执行。
+/注意/，=git clean= 是一个危险的命令，因为它会删除你工作目录中未被追踪的文件。确保你知道你在做什么，或者至少确保你的重要文件都已经被备份。
+*** 具体步骤
+1. 使用 =-n= 选项先做一次模拟运行，查看哪些文件将被删除：
+   #+BEGIN_SRC sh
+   git clean -n -X
+   #+END_SRC
+   这里，=-n= 是做一次模拟运行，=-X= 是删除所有已被 .gitignore 文件忽略的文件。
+
+2. 如果你确认要删除这些文件，可以使用 =-f= 选项来执行删除：
+   #+BEGIN_SRC sh
+   git clean -f -X
+   #+END_SRC
+   再次，注意这会永久删除这些文件，确保你已经备份了你的重要数据。
+
+3. 提交这个更改：
+   #+BEGIN_SRC sh
+   git commit -am "Remove ignored files"
+   #+END_SRC
+
+4. 将更改推送到远端仓库：
+   #+BEGIN_SRC sh
+   git push origin master
+   #+END_SRC
+   将 =master= 替换为你当前使用的分支名。
+
 
 ** 设置tag
 #+begin_src shell
