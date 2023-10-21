@@ -9,3 +9,8 @@
 /places
 *~
 /history
+.cache/
+cnfonts/
+chatgpt/
+.org-id-locations
+tabsession.el
