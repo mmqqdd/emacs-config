@@ -62,5 +62,75 @@ Supports exporting consult-grep to wgrep, file to wdeired, and consult-location 
       (clipboard-kill-region (point-min) (point-max)))
     (message "Current directory copied to clipboard: %s" current-directory)))
 
+(defun my/open-eshell-at-bottom ()
+  (interactive)
+  (let* (
+         ;; 获取当前目录名称作为项目名称，如果没有打开的文件，则使用 "default"
+         (project-name (if buffer-file-name
+                           (file-name-nondirectory
+                            (directory-file-name
+                             (file-name-directory buffer-file-name)))
+                         "default"))
+         ;; 根据项目名称创建或获取 eshell buffer
+         (eshell-buffer (get-buffer-create (concat "*eshell-" project-name "*")))
+         ;; 计算新窗口的高度为 frame 高度的 40%
+         (window-height (round (* (frame-height) 0.4)))
+         ;; 在 frame 的底部创建一个新窗口
+         (target-window (split-window (frame-root-window) (- window-height) 'below)))
+    ;; 选择新创建的窗口
+    (select-window target-window)
+    ;; 在新窗口中显示对应项目的 eshell buffer
+    (set-window-buffer target-window eshell-buffer)
+    ;; 切换到新创建的 buffer
+    (switch-to-buffer eshell-buffer)
+    ;; evil 进入插入模式
+    (when (bound-and-true-p evil-mode)
+      (evil-insert-state)
+      (end-of-line))
+    ;; 如果 eshell 未启动，则启动 eshell
+    (unless (eq major-mode 'eshell-mode)
+      (eshell-mode))))
+
+(goto-char (point-at-bol))
+
+;; let 语句用于设置一个临时的环境，在这个环境中 inhibit-read-only 被设置为 t 以允许修改只读的 buffer（eshell buffer 通常是只读的）。
+;; erase-buffer 函数用于清空当前 buffer 的所有内容。
+;; eshell-send-input 用于在清空 buffer 后发送一个新的 prompt。
+(defun my/eshell-clear-buffer ()
+  "Clear the current eshell buffer."
+  (interactive)
+  (let ((inhibit-read-only t))
+    (erase-buffer)
+    (eshell-send-input)))
+
+(add-hook 'eshell-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-l") 'my/eshell-clear-buffer)))
+
+(add-hook 'chatgpt-shell-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-l") 'my/eshell-clear-buffer)))
+
+(defun eshell-exit ()
+  "Override the `eshell-life-is-too-much' to close the window when `exit' is called."
+  (ignore-errors
+    (kill-buffer)
+    (delete-window)))
+(advice-add 'eshell-life-is-too-much :override #'eshell-exit)
+
+(defun my/org-agenda-list ()
+  (interactive)
+  ;; 判断是否有多个窗口
+  (if (> (length (window-list)) 1)
+      ;; 如果有多个窗口
+      (progn
+        ;; 判断当前窗口是否在左侧
+        (if (< (+ (window-pixel-left) (window-pixel-width))(- (frame-pixel-width) 10))
+            (other-window 1)  ; 切换到右侧窗口
+          nil)) ; 在当前窗口中打开
+    ;; 如果只有一个窗口
+    (split-window-right) ; 在右侧新建窗口
+    (other-window 1)) ; 切换到新建的窗口
+  (org-agenda-list)) ; 打开Agenda视图
 
 (provide 'init-funcs)

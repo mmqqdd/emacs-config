@@ -13,7 +13,11 @@
 
 ;; 更改光标的样式
 (setq-default cursor-type 'bar)
+;; (set-frame-font "Source Code Pro for Powerline 13" nil t)
 
+
+(use-package all-the-icons :ensure t)
+;; (set-frame-font "FiraCode Nerd Font 13" nil t)
 
 ;; 更改显示字体大小 14pt
 ;; http://stackoverflow.com/questions/294664/how-to-set-the-font-size-in-emacs
@@ -44,15 +48,32 @@
 (setq scroll-conservatively 100000) ;; 当光标处于最后一行，执行 next-line,不会将光标跳跃到中间
 (setq scroll-margin 0)
 
-(use-package cnfonts)
-(cnfonts-mode 1)
-;; 添加两个字号增大缩小的快捷键
-(define-key cnfonts-mode-map (kbd "C--") #'cnfonts-decrease-fontsize)
-(define-key cnfonts-mode-map (kbd "C-=") #'cnfonts-increase-fontsize)
-    
 
+(use-package cnfonts
+  :init (cnfonts-mode 1)
+  ;; 添加两个字号增大缩小的快捷键
+  :bind
+  (:map cnfonts-mode-map
+	("C--" . cnfonts-decrease-fontsize)
+	("C-=" . cnfonts-increase-fontsize)
+	
+	)
+  :config
+  ;; 当进入 cnfonts-ui-mode 时，自动切换到 Evil 的 Emacs state
+  (add-hook 'cnfonts-ui-mode-hook #'evil-emacs-state))
+(setq cnfonts-personal-fontnames '(;; 英文字体
+				   ("FiraCode Nerd Font" "Source Code Pro for Powerline")
+				   ;; 中文字体
+				   ("行楷-简" "行楷-繁")
+				   ))
+
+    
+(use-package nerd-icons-dired
+  :hook
+  (dired-mode . nerd-icons-dired-mode))
 
 (set-fontset-font t 'symbol "Noto Color Emoji")
+
 (use-package emojify
   :init
   (global-emojify-mode t))
@@ -291,13 +312,11 @@ Main data structure of the dispatcher with the form:
   :after (treemacs projectile)
   :ensure t)
 
-(use-package treemacs-icons-dired
-  :hook (dired-mode . treemacs-icons-dired-enable-once)
-  :ensure t)
+;(use-package treemacs-icons-dired
+;  :hook (dired-mode . treemacs-icons-dired-enable-once)
+;  :ensure t)
 
-(use-package treemacs-magit
-  :after (treemacs magit)
-  :ensure t)
+;  :after (treemacs magit)
 
 (use-package treemacs-persp ;;treemacs-perspective if you use perspective.el vs. persp-mode
   :after (treemacs persp-mode) ;;or perspective vs. persp-mode
@@ -309,5 +328,18 @@ Main data structure of the dispatcher with the form:
   :ensure t
   :config (treemacs-set-scope-type 'Tabs))
 
+;;set transparent effect
+(global-set-key [(f2)] 'loop-alpha)
+(setq alpha-list '((100 100) (95 65) (85 55) (75 45) (65 35)))
+(defun loop-alpha ()
+  (interactive)
+  (let ((h (car alpha-list)))                ;; head value will set to
+    ((lambda (a ab)
+       (set-frame-parameter (selected-frame) 'alpha (list a ab))
+       (add-to-list 'default-frame-alist (cons 'alpha (list a ab)))
+       ) (car h) (car (cdr h)))
+    (setq alpha-list (cdr (append alpha-list (list h))))
+    )
+)
 (provide 'init-ui)
 

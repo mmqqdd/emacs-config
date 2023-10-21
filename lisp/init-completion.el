@@ -6,7 +6,10 @@
   (global-company-mode t)
   :config
   (setq company-minimum-prefix-length 2)
-  (setq company-idle-delay 0))
+  (setq company-idle-delay 0)
+  (add-hook 'shell-mode-hook (lambda () (company-mode -1)))
+  :hook
+  (eshell-mode . (lambda () (company-mode -1))))
 
 ;;modeline上显示我的所有的按键和执行的命令
 ;(use-package keycast

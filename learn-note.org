@@ -78,3 +78,41 @@ Doom Emacs已经给你配置好了很多东西，你几乎不需要配置，马�
    可以在一个和多个窗口间切换，感觉用处不大
 6. popper
    可以方便切换特殊的buffer
+
+** day18
+1. org-download
+   |                  |                          |
+   |------------------+--------------------------|
+   | 在线截图         | org-download-screenshot  |
+   | 从剪贴板获取图片 | org-download-clipboard   |
+   | 不渲染图片       | org-toogle-inline-images |
+#+begin_src org
+  ,#+ATTR_HTML: :alt Zoomed image.
+  ,#+ATTR_HTML: :width 300 :style border:2px solid black;
+  [[file:pictures/2023-10-13_12-14-28_screenshot.jpg]]
+#+end_src
+代码效果：图片属性导出时修改了，但是在 org-mode中没有变化
+#+ATTR_HTML: :alt Zoomed image.
+#+ATTR_HTML: :width 300 :style border:2px solid black;
+[[file:pictures/2023-10-13_12-14-28_screenshot.jpg]]
+
+2. yasnippet
+   yas-new-snippet 创建快捷方式， C-c C-c保存
+   格式如下：
+   #+begin_src snippet
+     # -*- mode: snippet -*-
+     # name: image-width
+     # key: imw 
+     # --
+
+     ,#+ATTR_HTML: :width ${1:1000px}
+     $0
+
+   #+end_src 
+   输入imw再按tab自动调用yas-expand进行扩展
+3. org-protocol
+   将网页复制的内容自动保存到本地 org 文件中，暂时不用
+4. flyspell-correct ispell
+   用于拼写检查，暂时不用
+5. fanyi
+   用于翻译，可以用google-translate代替

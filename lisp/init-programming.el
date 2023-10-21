@@ -25,26 +25,27 @@
 (evil-define-key 'normal global-map (kbd "g d") 'xref-find-definitions)
 
 
-;; (use-package yasnippet
-;;   :ensure t
-;;   :hook ((prog-mode . yas-minor-mode)
-;; 	 (org-mode . yas-minor-mode))
-;;   :init
-;;   :config
-;;   (progn
-;;     (setq hippie-expand-try-functions-list
-;; 	  '(yas/hippie-try-expand
-;; 	    try-complete-file-name-partially
-;; 	    try-expand-all-abbrevs
-;; 	    try-expand-dabbrev
-;; 	    try-expand-dabbrev-all-buffers
-;; 	    try-expand-dabbrev-from-kill
-;; 	    try-complete-lisp-symbol-partially
-;; 	    try-complete-lisp-symbol))))
+(use-package yasnippet
+  :ensure t
+  :hook ((prog-mode . yas-minor-mode)
+	 (org-mode . yas-minor-mode))
+  :init
+  :config
+  (progn
+    (setq hippie-expand-try-functions-list
+	  '(yas/hippie-try-expand
+	    try-complete-file-name-partiall
+	    try-expand-all-abbrevs
+	    try-expand-dabbrev
+	    try-expand-dabbrev-all-buffers
+	    try-expand-dabbrev-from-kill
+	    try-complete-lisp-symbol-partially
+	    try-complete-lisp-symbol))))
 
-;; (use-package yasnippet-snippets
-;;   :ensure t
-;;   :after yasnippet)
+(use-package yasnippet-snippets
+  :ensure t
+  :after yasnippet)
 
+(evil-define-key 'normal global-map (kbd "g f") 'yas-expand)
 
 (provide 'init-programming)

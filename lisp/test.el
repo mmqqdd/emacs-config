@@ -205,3 +205,518 @@
     (error "Buffer is not visiting a file.")))
 
 (message (get-current-buffer-file-path))
+(let ((line-height 40)
+      (ov (make-overlay (point-at-bol) (point-at-eol))))
+  (overlay-put ov 'face '(:background "yellow"))
+  (overlay-put ov 'line-height line-height)
+  (overlay-put ov 'line-spacing (1- line-height)))
+
+(defun toggle-do-not-disturb ()
+  "Toggle MacOS Do Not Disturb mode on/off."
+  (interactive)
+  (let ((script "set curSetting to do shell script \"defaults -currentHost read com.apple.notificationcenterui doNotDisturb\"
+if curSetting = \"0\" then
+	do shell script \"defaults -currentHost write com.apple.notificationcenterui doNotDisturb -boolean true\"
+else
+	do shell script \"defaults -currentHost write com.apple.notificationcenterui doNotDisturb -boolean false\"
+end if
+
+do shell script \"killall NotificationCenter\""))
+    (shell-command (concat "osascript -e '" script "'"))))
+
+(defun add-org-schedule-to-calendar ()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (while (re-search-forward "SCHEDULED: <\\(.*?\\)>" nil t)
+      (let ((scheduled-time (match-string 1))
+            (event-title (save-excursion 
+                           (outline-previous-heading)
+                           (thing-at-point 'line t))))
+        (shell-command 
+         (concat "osascript -e '"
+                 "tell application \"Calendar\"' -e '"
+                 "tell calendar \"mqd学习计划\"' -e '"
+                 "make new event at end with properties {summary:\""
+                 (replace-regexp-in-string "\"" "\\\\\"" (replace-regexp-in-string "\n" "" event-title))
+                 "\", start date:date \"" scheduled-time 
+                 "\", end date:date \"" scheduled-time "\"}' -e '"
+                 "end tell' -e 'end tell'"))))))
+(setq )
+(defun add-org-schedule-to-calendar ()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (while (re-search-forward "SCHEDULED: <\\(.*?\\)>" nil t)
+      (let ((scheduled-time (match-string 1))
+            (event-title (save-excursion 
+                           (outline-previous-heading)
+                           (thing-at-point 'line t))))
+        (setq event-title (replace-regexp-in-string "^[*]+[[:space:]]+" "" event-title))
+        (setq event-title (replace-regexp-in-string "[[:space:]]*TODO[[:space:]]*" "" event-title))
+        (setq event-title (replace-regexp-in-string "[[:space:]]*DONE[[:space:]]*" "" event-title))
+        (setq event-title (replace-regexp-in-string "[\n\r]+" "" event-title))
+
+        (let ((tags (save-excursion
+                      (outline-previous-heading)
+                      (when (looking-at org-complex-heading-regexp)
+                        (match-string-no-properties 5)))))
+
+          (shell-command 
+           (concat "osascript -e '"
+                   "tell application \"Calendar\"' -e '"
+                   "tell calendar \"mqdtest\"' -e '"
+                   "make new event at end with properties {summary:\""
+                   (replace-regexp-in-string "\"" "\\\\\"" event-title)
+                   "\", start date:date \"" scheduled-time 
+                   "\", end date:date \"" scheduled-time 
+                   "\", url:\"" (or tags "") "\"}' -e '"
+                   "end tell' -e 'end tell'")))))))
+
+
+(defun org-entries-to-mac-calendar ()
+  (interactive)
+  (let (entries)
+    (org-map-entries
+     (lambda ()
+       (let* ((heading (org-get-heading t t t t))
+              (tags (org-get-tags))
+              (scheduled (org-entry-get nil "SCHEDULED"))
+              (timestamp (when scheduled
+                           (org-parse-time-string scheduled))))
+         (when timestamp
+           (push (list (decode-time (nth 5 timestamp))
+                       heading
+                       tags)
+                 entries))))
+     t 'agenda)
+    (dolist (entry entries)
+      (let ((time (car entry))
+            (title (replace-regexp-in-string "\\* \\|TODO\\|DONE" "" (nth 1 entry)))
+            (tags (nth 2 entry)))
+        (do-applescript
+         (format "
+tell application \"Calendar\"
+    tell calendar \"mqdtest\"
+        make new event with properties {description:\"%s\", summary:\"%s\", start date:date \"%d-%d-%d %d:%d:%d\"}
+    end tell
+end tell"
+                 (mapconcat 'identity tags ", ")
+                 title
+                 (nth 5 time) (nth 4 time) (nth 3 time)
+                 (nth 2 time) (nth 1 time) (nth 0 time)))))))
+
+(defun org-entries-to-mac-calendar ()
+  (interactive)
+  (let (entries)
+    (org-map-entries
+     (lambda ()
+       (let* ((heading (org-get-heading t t t t))
+              (tags (org-get-tags))
+              (scheduled (org-entry-get nil "SCHEDULED"))
+              (timestamp (when scheduled
+                           (org-parse-time-string scheduled))))
+         (when timestamp
+           (push (list (decode-time (nth 5 timestamp))
+                       heading
+                       tags)
+                 entries))))
+     t 'agenda)
+    (dolist (entry entries)
+      (let ((time (car entry))
+            (title (replace-regexp-in-string "\\* \\|TODO\\|DONE" "" (nth 1 entry)))
+            (tags (nth 2 entry)))
+        (do-applescript
+         (format "
+tell application \"Calendar\"
+    tell calendar \"My Calendar\"
+        set myevent to make new event with properties {summary:\"%s\", start date:date \"%d-%02d-%02d %02d:%02d:00\"}
+        tell myevent
+            make new attendee at end of attendees with properties {name:\"tags\", address:\"%s\"}
+        end tell
+    end tell
+end tell"
+                 title
+                 (nth 5 time) (nth 4 time) (nth 3 time)
+                 (nth 2 time) (nth 1 time)
+                 (mapconcat 'identity tags ", ")))))))
+
+(defun org-entries-to-mac-calendar ()
+  (interactive)
+  (let (entries)
+    (org-map-entries
+     (lambda ()
+       (let* ((heading (org-get-heading t t t t))
+              (tags (org-get-tags))
+              (scheduled (org-entry-get nil "SCHEDULED"))
+              (closed (org-entry-get nil "CLOSED"))
+              (timestamp (when scheduled
+                           (org-parse-time-string scheduled)))
+              (end-time (when closed
+                          (org-parse-time-string closed))))
+         (when timestamp
+           (push (list (decode-time (nth 5 timestamp))
+                       (decode-time (nth 5 end-time))
+                       heading
+                       tags)
+                 entries))))
+     t 'agenda)
+    (dolist (entry entries)
+      (let* ((start-time (car entry))
+             (end-time (cadr entry))
+             (title (replace-regexp-in-string "\\* \\|TODO\\|DONE" "" (nth 2 entry)))
+             (tags (mapconcat 'identity (nth 3 entry) ", ")))
+        (do-applescript
+         (format "
+tell application \"Calendar\"
+    tell calendar \"mqdtest\"
+        set myevent to make new event with properties {summary:\"%s\", start date:date \"%d-%02d-%02d %02d:%02d:00\", end date:date \"%d-%02d-%02d %02d:%02d:00\", description:\"%s\"}
+    end tell
+end tell"
+                 title
+                 (nth 5 start-time) (nth 4 start-time) (nth 3 start-time)
+                 (nth 2 start-time) (nth 1 start-time)
+                 (nth 5 end-time) (nth 4 end-time) (nth 3 end-time)
+                 (nth 2 end-time) (nth 1 end-time)
+                 tags))))))
+(defun org-entries-to-mac-calendar ()
+  (interactive)
+  (let (entries)
+    (org-map-entries
+     (lambda ()
+       (let* ((heading (org-get-heading t t t t))
+              (tags (org-get-tags))
+              (scheduled (org-entry-get nil "SCHEDULED"))
+              (timestamp (when scheduled
+                           (org-parse-time-string scheduled))))
+         (when timestamp
+           (push (list (decode-time (nth 5 timestamp))
+                       heading
+                       tags)
+                 entries))))
+     t 'agenda)
+    (dolist (entry entries)
+      (let* ((start-time (car entry))
+             (title (replace-regexp-in-string "\\* \\|TODO\\|DONE" "" (nth 1 entry)))
+             (tags (mapconcat 'identity (nth 2 entry) ", "))
+             (year (nth 5 start-time))
+             (month (nth 4 start-time))
+             (day (nth 3 start-time))
+             (hour (nth 2 start-time))
+             (minute (nth 1 start-time)))
+        (do-applescript
+         (format "
+tell application \"Calendar\"
+    tell calendar \"mqdtest\"
+        set myevent to make new event with properties {summary:\"%s\", start date:date \"%d-%02d-%02d %02d:%02d:00\", end date:date \"%d-%02d-%02d %02d:%02d:00\", description:\"Tags: %s\"}
+    end tell
+end tell"
+                 title
+                 year month day hour minute
+                 year month day (if (= hour 23) 0 (1+ hour)) (if (= hour 23) minute minute)
+                 tags))))))
+
+
+
+(defun org-entries-to-mac-calendar ()
+  (interactive)
+  (let (entries)
+    (org-map-entries
+     (lambda ()
+       (let* ((heading (org-get-heading t t t t))
+              (tags (org-get-tags))
+              (scheduled (org-entry-get nil "SCHEDULED"))
+              (timestamp (when scheduled
+                           (org-parse-time-string scheduled))))
+         (when timestamp
+           (push (list (decode-time (nth 5 timestamp))
+                       heading
+                       tags)
+                 entries))))
+     t nil) ; 修改了这里将 'agenda 改为 nil
+    (dolist (entry entries)
+      (let* ((start-time (car entry))
+             (title (replace-regexp-in-string "\\* \\|TODO\\|DONE" "" (nth 1 entry)))
+             (tags (mapconcat 'identity (nth 2 entry) ", "))
+             (year (nth 5 start-time))
+             (month (nth 4 start-time))
+             (day (nth 3 start-time))
+             (hour (nth 2 start-time))
+             (minute (nth 1 start-time)))
+        (do-applescript
+         (format "
+tell application \"Calendar\"
+    tell calendar \"mqdtest\"
+        set myevent to make new event with properties {summary:\"%s\", start date:date \"%d-%02d-%02d %02d:%02d:00\", end date:date \"%d-%02d-%02d %02d:%02d:00\", description:\"Tags: %s\"}
+    end tell
+end tell"
+                 title
+                 year month day hour minute
+                 year month day (if (= hour 23) 0 (1+ hour)) (if (= hour 23) minute minute)
+                 tags))))))
+(defun org-entries-to-mac-calendar ()
+  (interactive)
+  (let (entries)
+    (org-map-entries
+     (lambda ()
+       (let* ((heading (org-get-heading t t t t))
+              (tags (org-get-tags))
+              (scheduled (org-entry-get nil "SCHEDULED"))
+              (timestamp (when scheduled
+                           (org-parse-time-string scheduled))))
+         (when timestamp
+           (push (list (decode-time (nth 5 timestamp))
+                       heading
+                       tags)
+                 entries))))
+     t nil) 
+    (with-temp-buffer
+      (dolist (entry entries)
+        (let* ((start-time (car entry))
+               (title (replace-regexp-in-string "\\* \\|TODO\\|DONE" "" (nth 1 entry)))
+               (tags (mapconcat 'identity (nth 2 entry) ", "))
+               (year (nth 5 start-time))
+               (month (nth 4 start-time))
+               (day (nth 3 start-time))
+               (hour (nth 2 start-time))
+               (minute (nth 1 start-time)))
+          (insert (format "
+tell application \"Calendar\"
+    tell calendar \"My Calendar\"
+        set myevent to make new event with properties {summary:\"%s\", start date:date \"%d-%02d-%02d %02d:%02d:00\", end date:date \"%d-%02d-%02d %02d:%02d:00\", description:\"Tags: %s\"}
+    end tell
+end tell\n"
+                          title
+                          year month day hour minute
+                          year month day (if (= hour 23) 0 (1+ hour)) (if (= hour 23) minute minute)
+                          tags))))
+      (write-file "~/Desktop/calendar-scripts.scpt"))))
+
+(defun org-entries-to-mac-calendar ()
+  (interactive)
+  (let (entries)
+    (org-map-entries
+     (lambda ()
+       (let* ((heading (org-get-heading t t t t))
+              (tags (org-get-tags))
+              (scheduled (org-entry-get nil "SCHEDULED"))
+              (timestamp (when scheduled
+                           (org-parse-time-string scheduled))))
+         (when timestamp
+           (push (list (decode-time (apply 'encode-time (nth 5 timestamp)))
+                       heading
+                       tags)
+                 entries))))
+     nil nil) ; 修改此行以仅扫描当前 org 文件
+    (with-temp-buffer
+      (dolist (entry entries)
+        (let* ((start-time (car entry))
+               (title (replace-regexp-in-string "\\* \\|TODO\\|DONE" "" (nth 1 entry)))
+               (tags (mapconcat 'identity (nth 2 entry) ", "))
+               (year (nth 5 start-time))
+               (month (nth 4 start-time))
+               (day (nth 3 start-time))
+               (hour (nth 2 start-time))
+               (minute (nth 1 start-time)))
+          (insert (format "
+tell application \"Calendar\"
+    tell calendar \"My Calendar\"
+        set myevent to make new event with properties {summary:\"%s\", start date:date \"%d-%02d-%02d %02d:%02d:00\", end date:date \"%d-%02d-%02d %02d:%02d:00\", description:\"Tags: %s\"}
+    end tell
+end tell\n"
+                          title
+                          year month day hour minute
+                          year month day (if (= hour 23) 0 (1+ hour)) (if (= hour 23) minute minute)
+                          tags))))
+      (write-file "~/Desktop/calendar-scripts.scpt"))))
+
+(defun org-entries-to-mac-calendar ()
+  (interactive)
+  (let (entries)
+    (org-map-entries
+     (lambda ()
+       (let* ((heading (org-get-heading t t t t))
+              (tags (org-get-tags))
+              (scheduled (org-entry-get nil "SCHEDULED"))
+              (timestamp (when scheduled
+                           (org-parse-time-string scheduled))))
+         (when timestamp
+           (push (list (apply 'encode-time (org-parse-time-string scheduled))
+                       heading
+                       tags)
+                 entries))))
+     nil nil) ; 修改此行以仅扫描当前 org 文件
+    (with-temp-buffer
+      (dolist (entry entries)
+        (let* ((time (car entry))
+               (title (replace-regexp-in-string "\\* \\|TODO\\|DONE" "" (nth 1 entry)))
+               (tags (mapconcat 'identity (nth 2 entry) ", "))
+               (year (string-to-number (format-time-string "%Y" time)))
+               (month (string-to-number (format-time-string "%m" time)))
+               (day (string-to-number (format-time-string "%d" time)))
+               (hour (string-to-number (format-time-string "%H" time)))
+               (minute (string-to-number (format-time-string "%M" time))))
+          (insert (format "
+tell application \"Calendar\"
+    tell calendar \"My Calendar\"
+        set myevent to make new event with properties {summary:\"%s\", start date:date \"%d-%02d-%02d %02d:%02d:00\", end date:date \"%d-%02d-%02d %02d:%02d:00\", description:\"Tags: %s\"}
+    end tell
+end tell\n"
+                          title
+                          year month day hour minute
+                          year month day (if (= hour 23) 0 (1+ hour)) (if (= hour 23) minute minute)
+                          tags))))
+      (write-file "~/Desktop/calendar-scripts.scpt"))))
+(defun org-entries-to-mac-calendar ()
+  (interactive)
+  (let (entries)
+    (org-map-entries
+     (lambda ()
+       (let* ((heading (org-get-heading t t t t))
+              (tags (org-get-tags))
+              (scheduled (org-entry-get nil "SCHEDULED"))
+              (timestamp (when scheduled
+                           (org-parse-time-string scheduled))))
+         (when timestamp
+           (push (list (apply 'encode-time (org-parse-time-string scheduled))
+                       heading
+                       tags)
+                 entries))))
+     nil nil) ; 这里已经修正以仅扫描当前 org 文件
+    (dolist (entry entries)
+      (let* ((time (car entry))
+             (title (replace-regexp-in-string "\\* \\|TODO\\|DONE" "" (nth 1 entry)))
+             (tags (mapconcat 'identity (nth 2 entry) ", "))
+             (year (string-to-number (format-time-string "%Y" time)))
+             (month (string-to-number (format-time-string "%m" time)))
+             (day (string-to-number (format-time-string "%d" time)))
+             (hour (string-to-number (format-time-string "%H" time)))
+             (minute (string-to-number (format-time-string "%M" time)))
+             (applescript-code (format "
+tell application \"Calendar\"
+    tell calendar \"My Calendar\"
+        set myevent to make new event with properties {summary:\"%s\", start date:date \"%d-%02d-%02d %02d:%02d:00\", end date:date \"%d-%02d-%02d %02d:%02d:00\", description:\"Tags: %s\"}
+    end tell
+end tell"
+                                       title
+                                       year month day hour minute
+                                       year month day (if (= hour 23) 0 (1+ hour)) (if (= hour 23) minute minute)
+                                       tags)))
+        (do-applescript applescript-code)))))
+(defun org-entries-to-mac-calendar ()
+  (interactive)
+  (let ((entries '())
+        (script-file "/tmp/org-to-calendar.applescript"))
+    (org-map-entries
+     (lambda ()
+       (let* ((heading (org-get-heading t t t t))
+              (tags (org-get-tags))
+              (scheduled (org-entry-get nil "SCHEDULED"))
+              (timestamp (when scheduled
+                           (org-parse-time-string scheduled))))
+         (when timestamp
+           (push (list (apply 'encode-time (org-parse-time-string scheduled))
+                       heading
+                       tags)
+                 entries))))
+     nil nil) ; 仅扫描当前 org 文件
+    (with-temp-file script-file
+      (dolist (entry entries)
+        (let* ((time (car entry))
+               (title (replace-regexp-in-string "\\* \\|TODO\\|DONE" "" (nth 1 entry)))
+               (tags (mapconcat 'identity (nth 2 entry) ", "))
+               (year (string-to-number (format-time-string "%Y" time)))
+               (month (string-to-number (format-time-string "%m" time)))
+               (day (string-to-number (format-time-string "%d" time)))
+               (hour (string-to-number (format-time-string "%H" time)))
+               (minute (string-to-number (format-time-string "%M" time)))
+               (applescript-code (format "
+tell application \"Calendar\"
+    tell calendar \"My Calendar\"
+        set myevent to make new event with properties {summary:\"%s\", start date:date \"%d-%02d-%02d %02d:%02d:00\", end date:date \"%d-%02d-%02d %02d:%02d:00\", description:\"Tags: %s\"}
+    end tell
+end tell"
+                                         title
+                                         year month day hour minute
+                                         year month day (if (= hour 23) 0 (1+ hour)) (if (= hour 23) minute minute)
+                                         tags)))
+          (insert applescript-code "\n"))))
+    (shell-command (format "osascript %s" script-file))))
+(defun org-current-entry-to-mac-calendar ()
+  (interactive)
+  (let ((script-file "/tmp/org-to-calendar.applescript"))
+    (save-excursion
+      (org-back-to-heading t)
+      (let* ((heading (org-get-heading t t t t))
+             (tags (org-get-tags))
+             (scheduled (org-entry-get nil "SCHEDULED"))
+             (timestamp (when scheduled
+                          (org-parse-time-string scheduled))))
+        (when timestamp
+          (with-temp-file script-file
+            (let* ((time (apply 'encode-time timestamp))
+                   (title (replace-regexp-in-string "\\* \\|TODO\\|DONE" "" heading))
+                   (tags (mapconcat 'identity tags ", "))
+                   (year (string-to-number (format-time-string "%Y" time)))
+                   (month (string-to-number (format-time-string "%m" time)))
+                   (day (string-to-number (format-time-string "%d" time)))
+                   (hour (string-to-number (format-time-string "%H" time)))
+                   (minute (string-to-number (format-time-string "%M" time)))
+                   (applescript-code (format "
+tell application \"Calendar\"
+    tell calendar \"My Calendar\"
+        set myevent to make new event with properties {summary:\"%s\", start date:date \"%d-%02d-%02d %02d:%02d:00\", end date:date \"%d-%02d-%02d %02d:%02d:00\", description:\"Tags: %s\"}
+    end tell
+end tell"
+                                             title
+                                             year month day hour minute
+                                             year month day (if (= hour 23) 0 (1+ hour)) (if (= hour 23) minute minute)
+                                             tags)))
+              (insert applescript-code "\n")))
+          (shell-command (format "osascript %s" script-file))))))
+  (message "Event added to calendar if criteria met."))
+
+(defun org-current-entry-to-mac-calendar ()
+  (interactive)
+  (let ((script-file "/tmp/org-to-calendar.applescript"))
+    (save-excursion
+      (org-back-to-heading t)
+      (let* ((heading (org-get-heading t t t t))
+             (tags (org-get-tags))
+             (scheduled (org-entry-get nil "SCHEDULED"))
+             (timestamp (when scheduled
+                          (org-parse-time-string scheduled))))
+        (if timestamp
+            (progn
+              (with-temp-file script-file
+                (let* ((time (apply 'encode-time timestamp))
+                       (title (replace-regexp-in-string "\\* \\|TODO\\|DONE" "" heading))
+                       (tags (mapconcat 'identity tags ", "))
+                       (year (string-to-number (format-time-string "%Y" time)))
+                       (month (string-to-number (format-time-string "%m" time)))
+                       (day (string-to-number (format-time-string "%d" time)))
+                       (hour (string-to-number (format-time-string "%H" time)))
+                       (minute (string-to-number (format-time-string "%M" time)))
+                       (applescript-code (format "
+tell application \"Calendar\"
+    tell calendar \"My Calendar\"
+        set myevent to make new event with properties {summary:\"%s\", start date:date \"%d-%02d-%02d %02d:%02d:00\", end date:date \"%d-%02d-%02d %02d:%02d:00\", description:\"Tags: %s\"}
+    end tell
+end tell"
+                                                 title
+                                                 year month day hour minute
+                                                 year month day (if (= hour 23) 0 (1+ hour)) (if (= hour 23) minute minute)
+                                                 tags)))
+                  (insert applescript-code "\n")))
+              (shell-command (format "osascript %s" script-file))
+              (message "Event added to calendar."))
+          (message "The current line does not have a scheduled timestamp or is not a heading."))))))
+;; aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa|
+;; 你你你你你你你你你你你你你你你你你你你你|
+;; ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,|
+;; 。。。。。。。。。。。。。。。。。。。。|
+;; 1111111111111111111111111111111111111111|
+;; 東東東東東東東東東東東東東東東東東東東東|
+;; ここここここここここここここここここここ|
+;; ｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺ|
+;; 까까까까까까까까까까까까까까까까까까까까|

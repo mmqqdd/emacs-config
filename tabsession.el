@@ -2,7 +2,7 @@
 ;; -------------------------------------------------------------------------
 ;; Tabspaces Session File for Emacs
 ;; -------------------------------------------------------------------------
-;; Created Fri Oct 13 09:22:24 2023
+;; Created Sat Oct 21 11:38:46 2023
 
 ;; Tabs and buffers:
-(setq tabspaces--session-list '((("/Users/mengqiangding/workspace/gtd/diary.org") . "gtd") (("/Users/mengqiangding/.emacs.d/lisp/init-ui.el") . ".emacs.d")))
+(setq tabspaces--session-list '((("/Users/mengqiangding/.emacs.d/readme.org" "/Users/mengqiangding/.emacs.d/lisp/init-ui.el" "/Users/mengqiangding/.emacs.d/elpa/cnfonts-20230412.132/cnfonts.el" "/Users/mengqiangding/.emacs.d/init.el" "/Users/mengqiangding/.emacs.d/cnfonts/cnfonts.conf" "/Users/mengqiangding/.emacs.d/cnfonts/v4/profile1.el" "/Users/mengqiangding/workspace/gtd/diary.org" "/Users/mengqiangding/workspace/gtd/findwork.org") . "readme.org") (("/Users/mengqiangding/.emacs.d/init.el" "/Users/mengqiangding/workspace/gtd/findwork.org" "/Users/mengqiangding/workspace/gtd/diary.org" "/Users/mengqiangding/.emacs.d/lisp/init-ui.el" "/Users/mengqiangding/.emacs.d/elpa/cnfonts-20230412.132/cnfonts.el" "/Users/mengqiangding/.emacs.d/lisp/init-org.el" "/Users/mengqiangding/.emacs.d/lisp/test.el" "/Users/mengqiangding/workspace/philosophy/my_workflow.org") . "philosophy") (("/Users/mengqiangding/workspace/algorithm/test13.cpp" "/Users/mengqiangding/.emacs.d/lisp/init-org.el" "/Users/mengqiangding/workspace/gtd/diary.org" "/usr/local/Cellar/emacs-plus@29/29.1/share/emacs/29.1/etc/HELLO" "/Users/mengqiangding/.emacs.d/init.el" "/Users/mengqiangding/.emacs.d/lisp/init-evil.el" "/Users/mengqiangding/workspace/algorithm/test1.go" "/Users/mengqiangding/.emacs.d/lisp/init-funcs.el") . "algorithm") (("/Users/mengqiangding/local_workspace/moduo/muduo/muduo/net/Timer.cc") . "muduo")))

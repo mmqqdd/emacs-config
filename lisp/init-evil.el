@@ -100,16 +100,25 @@ Create prefix map: +general-global-NAME. Prefix bindings in BODY with INFIX-KEY.
     "hv" 'describe-variable
     "hk" 'describe-key
     "/" '(my/search-project-for-symbol-at-point :which-key "项目中搜索")
+    "RET" 'bookmark-jump
     )
 
   (+general-global-menu! "search" "s"
     "b" 'my/search-for-symbol-at-point)
 
+  (+general-global-menu! "agenda" "a"
+    "a" 'my/org-agenda-list)
+
+  (+general-global-menu! "export" "e"
+    "i" '(my/org-current-entry-to-mac-calendar :which-key "org-to-icalender")
+    "m" '(org-hugo-export-to-md :which-key "org-to-hugo-markdown"))
+
   (+general-global-menu! "file" "f"
     "p" 'open-init-file
     "f" 'find-file
     "y" '(my/copy-current-buffer-file-path :which-key "copy-file-path")
-    "d" '(my/copy-current-directory-to-clipboard :which-key "copy-dir-path"))
+    "d" '(my/copy-current-directory-to-clipboard :which-key "copy-dir-path")
+    "c" 'org-download-clipboard)
 
   (+general-global-menu! "buffer" "b"
     "s" 'my/search-for-symbol-at-point
@@ -125,7 +134,8 @@ Create prefix map: +general-global-NAME. Prefix bindings in BODY with INFIX-KEY.
     "f" 'my-open-current-directory
     "k" 'kill-buffer
     "y" 'copy-buffer-name
-    "K" 'kill-other-buffers))
+    "K" 'kill-other-buffers
+    "m" 'bookmark-set))
 
 
 (+general-global-menu! "window" "w"
@@ -164,7 +174,8 @@ Create prefix map: +general-global-NAME. Prefix bindings in BODY with INFIX-KEY.
   "p" '(tabspaces-open-or-create-project-and-workspace :which-key "open-project"))
 
 (+general-global-menu! "open" "o"
-  "p" 'treemacs)
+  "p" 'treemacs
+  "t" 'my/open-eshell-at-bottom)
 
 ;; 选中单词，R，批量操作所有相同单词
 (use-package iedit

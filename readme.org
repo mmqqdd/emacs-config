@@ -20,8 +20,34 @@
   git tag [tagName]   # 创建tag, 名称为tagName
   git push origin [tagName] #推送到远端仓库
 #+end_src
+* chatgpt
+** 如何配置 chatgpt
+*** chatgpt3.5
+*** chtgpt4
+1. 教程：[[https://www.bilibili.com/video/BV1fN411v7PE/?spm_id_from=333.788.recommend_more_video.0&vd_source=259ee2f6ff984c9ca1ed1fdcea972eff][2023年9月份ChatGPT Plus最新充值方法]]
+2. 网站：https://www.i4store.net
+3. 信息：
+   |-------------+-------------------|
+   | card        | 4674130088847175  |
+   | Address     | 1201 Meadow Drive |
+   | City        | livingston        |
+   | Postal code | 59047             |
+   | State       | Montana           |
+   | code        | 738               |
+   |             | 01/2029           |
+   
+*** open-api-key
+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
 
-
+* Emacs 工作流建设
+1. 以项目为单位进行管理
+2. 不拘泥于项目
+   比如配置在~/.emacs.d目录下，agenda-files 在~/gtd目录下，比如我修改了~/.emacs.d/lisp/init-org.el
+   中的 agenda配置,同时想修改 ~/gtd/diary.org文件，这时候就可以在一个工作区中同时打开不同项目中的文件，
+   增加灵活性。
+3. 设置标记点，方便跳转
+   当我们需要在多文件中频繁跳转时，可以采取此法来，随时跳会标记点，尤其在不同项目文件中跳转时很方便。
+   bookmark-set / bookmark-jump
 * org 操作
 ** 手册
 1. [[https://orgmode.org/manual/index.html][The Org Manual]]
@@ -50,6 +76,9 @@
 1. 设置持续时间(格式: 00:xx): e org-agenda-set-effort  
 2. 过滤持续时间: _ org-agenda-filter-by-effort
 3. 设置tag: : org-agenda-set-tags 
+| 操作名 | 指令                 | 快捷键 |   |   |
+|--------+----------------------+--------+---+---|
+|        | org-agenda-week-view | w      |   |   |
 
 ** 表格操作
 一定一定要学会使用表格，表格更加直观，可以在表格中增加链接，链接到详细说明处。
@@ -173,6 +202,53 @@ All headlines in the current buffer are offered as completions.
 
 ** 
 
+
+* Emacs UI 配置
+** 字体配置
+*** 下载字体
+Nerd Fonts 是一个使用大量字体图标来解决程序员在开发过程中缺少合适字体的问题的项目。它可以从流行的字体图标库中将大量外部字体引入待开发的项目中，它支持的字体图标库包括 Font Awesome , Devicons , Octicons , and others。
+仓库：https://github.com/ryanoasis/nerd-fonts
+ 下载字体基本步骤：
+ 1. 下载 ttf文件，比如FiraCode[[https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/FiraCode/Regular/FiraCodeNerdFont-Regular.ttf][ttf字体链接]]
+ 2. 直接点击 ttf 文件进行安装，ttf 可以理解为一个字体安装包，打开根据提示一路点击确定就行
+ 3. 打开 Emacs 进行配置
+*** Eamcs 中配置字体
+#+begin_src elisp
+  ;; 方法1: 通过指令设置字体，
+  ;; FiraCode Nerd 为字体名
+  ;; 13 为字体大小
+  (set-frame-font "FiraCode Nerd Font 13" nil t)
+
+  ;; 方法2: 使用第三方插件配置字体
+  (use-package cnfonts
+    :init (cnfonts-mode 1)
+    ;; 添加两个字号增大缩小的快捷键
+    :bind
+    (:map cnfonts-mode-map
+          ("C--" . cnfonts-decrease-fontsize)
+          ("C-=" . cnfonts-increase-fontsize)
+
+          ))
+  
+  (setq cnfonts-personal-fontnames '(;; 英文字体
+                                     ("FiraCode Nerd Font" "Source Code Pro for Powerline")
+                                     ;; 中文字体
+                                     ("行楷-简" "行楷-繁")
+                                     ))
+#+end_src
+
+我这里推荐使用[[https://github.com/tumashu/cnfonts][cnfonts]],cnfonts 原来叫: chinese-fonts-setup, 是一个 Emacs 中英文字体配置工具。
+可以比较方便地实现中文字体和英文字体等宽（也就是大家常说的中英 文对齐）。
+我一开始是使用 org-table ，发现同时有中英文时，表格无法对齐，就开始使用 cnfonts了。
+接着上文说, 字体下载好后，
+1. 通过 use-package 安装 cnfonts
+2. 设置cnfonts-personal-fontnames, 将刚刚下载的字体名添加进去
+3. M-x cnfonts-edit-profile , 打开配置界面, 随便点点，很容易配置的。
+   #+DOWNLOADED: screenshot @ 2023-10-21 11:18:47
+   [[file:pictures/2023-10-21_11-18-47_screenshot.jpg]]
+4. 配置完毕，直接关闭 buffer 就行。
+
+
 * detail
 ** org-insert-heading-respect-content
 这个指令会插入同级标题，会往上找到距离当前光标最近的标题，然后插入同级标题。
@@ -182,25 +258,3 @@ All headlines in the current buffer are offered as completions.
 1. 标题：TODO -> DONE
 2. checklist: 样式变更
 3. 时间戳：更新时间戳
-
-* Workspace
-** Daily routine [0%]                                                 :Learn:
-SCHEDULED: <2023-10-06 五 20:00 +1d>
-:PROPERTIES:
-:RESET_CHECK_BOXES: t
-:LAST_REPEAT: [2023-10-02 一 18:53]
-:END:
-:LOGBOOK: - State "DONE"       from              [2023-10-02 一 18:53]
-- State "DONE"       from              [2023-10-02 一 18:53]
-:END:
-
-- [ ] leetcode
-- [ ] exercise
-- [ ] coding
-** TODO [#A] Learn Emacs                                              :Emacs:
-SCHEDULED: <2023-10-08 日 21:00>
-:PROPERTIES:
-:Effort:   00:30
-:END:
-  
- [2023-10-07 六 18:49]

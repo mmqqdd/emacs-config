@@ -64,8 +64,16 @@
 
 
 
+(use-package chatgpt-shell
+  :ensure t
+  :custom
+  ((chatgpt-shell-openai-key
+    (lambda ()
+      (auth-source-pass-get 'secret "openai-key")))))
 
 
+(setq chatgpt-shell-openai-key "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")    
+(setq dell-e-shell-openai-key "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")
 
 
 (provide 'init-tools)
