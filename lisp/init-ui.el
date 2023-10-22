@@ -21,7 +21,7 @@
 
 ;; 更改显示字体大小 14pt
 ;; http://stackoverflow.com/questions/294664/how-to-set-the-font-size-in-emacs
-(set-face-attribute 'default nil :height 130)
+;; (set-face-attribute 'default nil :height 130)
 
 ;;让鼠标滚动更好用
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)))
@@ -372,6 +372,8 @@ Main data structure of the dispatcher with the form:
   ;; Because spacemacs had different ideas about the verbatim background
   ;; (set-face-background 'org-bold "#red")
   ;; (set-face-background 'org-verbatim "#red")
+
+
 
 (provide 'init-ui)
 

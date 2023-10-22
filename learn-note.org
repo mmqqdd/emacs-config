@@ -49,6 +49,9 @@ Doom Emacs已经给你配置好了很多东西，你几乎不需要配置，马�
 2. 每个视频做总结
 3. 先记关键字，看完再做详细总结
 
+视频地址: https://bilibili.com/video/BV12P4y1j7EL/?vd_source=259ee2f6ff984c9ca1ed1fdcea972eff
+文档地址: https://book.emacs-china.org/
+代码地址: https://gitee.com/emacs-china/emacs.d
 
 ** day12
 
@@ -116,3 +119,31 @@ Doom Emacs已经给你配置好了很多东西，你几乎不需要配置，马�
    用于拼写检查，暂时不用
 5. fanyi
    用于翻译，可以用google-translate代替
+
+** day21
+1. profiler-start  profiler-report
+   会记录 start 到 report 过程中，所有函数对 cpu 或内存的消耗占比.
+2. emacs-init-time
+3. benchmark-init
+   #+begin_src elisp
+     (use-package benchmark-init
+       :ensure t
+       :demand t
+       :config
+       (add-hook 'after-init-hook 'benchmark-init/deactivate))
+   #+end_src 
+   benchmark-init/show-durations-tree
+   benchmark-init/show-durations-tabulated
+4. 开始优化
+   1. 延迟加载
+      #+begin_src elisp
+        (setq use-package-always-defer t)
+      #+end_src
+      优化完: 5.8s
+   2. 修改 init-ui.el
+      修改 init-ui.el
+      优化完 5.27s
+   3. 修改init-org.el
+      4.4s
+   
+

@@ -32,8 +32,6 @@
 
 (use-package consult)
 
-;;(package-install 'google-translate)
-
 ;; minibuf 出现选择列表
 (use-package vertico
   :init
@@ -42,8 +40,9 @@
 	      ("C-j" . 'vertico-next)
 	      ("C-k" . 'vertico-previous)))
 
-;; 优化vertico 支持模糊搜索
+;; ;; 优化vertico 支持模糊搜索
 (use-package orderless
+  :demand t
   :config
   (setq completion-styles '(orderless)))
 

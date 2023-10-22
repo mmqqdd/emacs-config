@@ -1,56 +1,61 @@
-(require 'org-tempo) ;开启easy template
-
-;; <取消自动补全 
-(add-hook 'org-mode-hook
-	  (lambda ()
-	    (setq-local electric-pair-inhibit-predicate
-			`(lambda (c)
-			   (if (char-equal c ?\<) t
-			     (,electric-pair-inhibit-predicate c))))))
-
-
-(setq org-todo-keywords
-      (quote ((sequence "TODO(t)" "DOING(s)" "|" "DONE(d!/!)")
-	      (sequence "WAITING(w@/!)" "SOMEDAY(S)" "|" "CANCELLED(c@/!)" "MEETING(m)" "PHONE(p)"))))
+(with-eval-after-load 'org
+  (require 'org-tempo) ;开启easy template
+  ;; <取消自动补全 
+  (add-hook 'org-mode-hook
+	    (lambda ()
+	      (setq-local electric-pair-inhibit-predicate
+			  `(lambda (c)
+			     (if (char-equal c ?\<) t
+			       (,electric-pair-inhibit-predicate c))))))
 
 
-(use-package org-contrib)
-(require 'org-checklist)
-
-;; 完成任务，日志记录在 LOGBOOK 中
-(setq org-log-done t)
-(setq org-log-into-drawer t)
-
-;; M-x org-set-properties , 设置属性， RESET_CHECK_BOXES: t 可以重置 check boxes 
-
-(global-set-key (kbd "C-c a") 'org-agenda)
-(setq org-agenda-files '("~/workspace/gtd/findwork.org" "~/workspace/gtd/diary.org" "~/workspace/gtd/brainstorming.org"))
-
-;; 使用 org-agenda-log-mode 还可以配合 org-agenda-log-mode-items 这个变量，
-;; 我这默认值是 '(closed clock)，意思是会显示完成任务是在什么时候完成的，
-;; 以及任务从什么时候开始计时并结束计时的，还有一个可选的值是 state，
-;; 加上的话会显示任务在什么时候状态发生了变化（比如从 TODO 变化为 DOING)
-(setq org-agenda-log-mode-items '(clock))
-(setq org-agenda-log-mode-add-notes nil)
-(setq org-agenda-span 'day)
-
-(setq org-agenda-window-setup 'current-window)
+  (setq org-todo-keywords
+	(quote ((sequence "TODO(t)" "DOING(s)" "|" "DONE(d!/!)")
+		(sequence "WAITING(w@/!)" "SOMEDAY(S)" "|" "CANCELLED(c@/!)" "MEETING(m)" "PHONE(p)"))))
 
 
+  (use-package org-contrib)
+  (require 'org-checklist)
 
-;; (add-to-list 'display-buffer-alist
-;;              '("\\*Agenda\\*"
-;;                (display-buffer-reuse-window display-buffer-at-bottom)
-;;                (reusable-frames . visible)
-;;                (side . right)
-;;                (window-height . 0.4)))
+  ;; 完成任务，日志记录在 LOGBOOK 中
+  (setq org-log-done t)
+  (setq org-log-into-drawer t)
 
-;; DOCT: Declarative Org Capture Templates
-(use-package doct
-  :ensure t
-  ;;recommended: defer until calling doct
-  :defer
-  :commands (doct))
+  ;; M-x org-set-properties , 设置属性， RESET_CHECK_BOXES: t 可以重置 check boxes 
+
+  (global-set-key (kbd "C-c a") 'org-agenda)
+  (setq org-agenda-files '("~/workspace/gtd/findwork.org" "~/workspace/gtd/diary.org" "~/workspace/gtd/brainstorming.org"))
+
+  ;; 使用 org-agenda-log-mode 还可以配合 org-agenda-log-mode-items 这个变量，
+  ;; 我这默认值是 '(closed clock)，意思是会显示完成任务是在什么时候完成的，
+  ;; 以及任务从什么时候开始计时并结束计时的，还有一个可选的值是 state，
+  ;; 加上的话会显示任务在什么时候状态发生了变化（比如从 TODO 变化为 DOING)
+  (setq org-agenda-log-mode-items '(clock))
+  (setq org-agenda-log-mode-add-notes nil)
+  (setq org-agenda-span 'day)
+
+  (setq org-agenda-window-setup 'current-window)
+
+  (setq org-agenda-custom-commands
+	'(("c" "重要且紧急的事"
+	   ((tags-todo "+PRIORITY=\"A\"")))
+	  ("d" "Priority A and B tasks"
+           ((tags-todo "+PRIORITY=\"A\"|+PRIORITY=\"B\"")))
+	  ;; ...other commands here
+	  ))
+
+(add-to-list 'org-agenda-custom-commands
+	     '("r" "Daily Agenda Review"
+               ((agenda "" ((org-agenda-overriding-header "今日记录")
+                            (org-agenda-span 'day)
+                            (org-agenda-show-log 'clockcheck)
+                            (org-agenda-start-with-log-mode nil)
+                            (org-agenda-log-mode-items '(closed clock))
+                            (org-agenda-clockreport-mode t)
+                            )))
+	       ))
+  ;; 完成任务时, 将其划线勾掉
+  (set-face-attribute 'org-headline-done nil :strike-through t)
 
 (setq org-capture-templates
       '(("i" "Little" entry (file+headline "~/workspace/gtd/diary.org" "LitteThings")
@@ -74,13 +79,37 @@
         (todo . " %i %-12:c")
         (tags . " %i %-12:c")
         (search . " %i %-12:c")))
+;; 链接按回车可以打开链接
+(setq org-return-follows-link t)
+
+(setq org-startup-indented t)
+
+)
+
+
+
+
+;; (add-to-list 'display-buffer-alist
+;;              '("\\*Agenda\\*"
+;;                (display-buffer-reuse-window display-buffer-at-bottom)
+;;                (reusable-frames . visible)
+;;                (side . right)
+;;                (window-height . 0.4)))
+
+;; DOCT: Declarative Org Capture Templates
+(use-package doct
+  :ensure t
+  ;;recommended: defer until calling doct
+  :defer t
+  :commands (doct))
+
 
 (defun my/org-agenda-done()
   ;; 1. 退出clock 2. 状态标记为DONE
   (interactive)
   (progn
-     (org-agenda-clock-out)
-     (org-agenda-todo "DONE")))
+    (org-agenda-clock-out)
+    (org-agenda-todo "DONE")))
 
 (defun my/org-agenda-time-grid-spacing ()
   "Set different line spacing w.r.t. time duration."
@@ -136,24 +165,6 @@
 
 (global-set-key (kbd "C-c r") 'org-capture)
 
-(setq org-agenda-custom-commands
-      '(("c" "重要且紧急的事"
-	 ((tags-todo "+PRIORITY=\"A\"")))
-	("d" "Priority A and B tasks"
-         ((tags-todo "+PRIORITY=\"A\"|+PRIORITY=\"B\"")))
-	;; ...other commands here
-	))
-
-(add-to-list 'org-agenda-custom-commands
-	     '("r" "Daily Agenda Review"
-               ((agenda "" ((org-agenda-overriding-header "今日记录")
-                            (org-agenda-span 'day)
-                            (org-agenda-show-log 'clockcheck)
-                            (org-agenda-start-with-log-mode nil)
-                            (org-agenda-log-mode-items '(closed clock))
-                            (org-agenda-clockreport-mode t)
-                            )))
-	       ))
 
 (use-package ox-hugo
   :ensure t   ;Auto-install the package from Melpa
@@ -200,10 +211,6 @@ See `org-capture-templates' for more information."
 	    ))
 
 
-;; 链接按回车可以打开链接
-(setq org-return-follows-link t)
-
-(setq org-startup-indented t)
 
 (use-package org-download
   :ensure t
@@ -232,184 +239,98 @@ See `org-capture-templates' for more information."
 ;; 		  ;; org-download-screenshot-method "screencapture -i %s"
 
 ;; diary in org-agenda-view 
-(setq org-agenda-include-diary t) 
-(setq org-agenda-diary-file "~/Documents/OrgMode/ORG/Master/standard-diary") 
-(setq diary-file "~/Documents/OrgMode/ORG/Master/standard-diary") 
 ;; 		  org-downlo# Coordinates 
-(setq calendar-longitude +116.4) ;;long是经度, 东经 
-(setq calendar-latitude +39.9) ;;lat, flat, 
+;; (setq calendar-longitude +116.4) ;;long是经度, 东经 
+;; (setq calendar-latitude +39.9) ;;lat, flat, 
 
 
 ;;Sunrise and Sunset 
 ;;日出而作 
-(defun diary-sunrise () 
-  (let ((dss (diary-sunrise-sunset))) 
-    (with-temp-buffer 
-      (insert dss) 
-      (goto-char (point-min)) 
-      (while (re-search-forward " ([^)]*)" nil t) 
-    (replace-match "" nil nil)) 
-      (goto-char (point-min)) 
-      (search-forward ",") 
-      (buffer-substring (point-min) (match-beginning 0))))) 
+;; (defun diary-sunrise () 
+;;   (let ((dss (diary-sunrise-sunset))) 
+;;     (with-temp-buffer 
+;;       (insert dss) 
+;;       (goto-char (point-min)) 
+;;       (while (re-search-forward " ([^)]*)" nil t) 
+;;     (replace-match "" nil nil)) 
+;;       (goto-char (point-min)) 
+;;       (search-forward ",") 
+;;       (buffer-substring (point-min) (match-beginning 0))))) 
  
-;; sunset 日落而息 
-(defun diary-sunset () 
-  (let ((dss (diary-sunrise-sunset)) 
-        start end) 
-    (with-temp-buffer 
-      (insert dss) 
-      (goto-char (point-min)) 
-      (while (re-search-forward " ([^)]*)" nil t) 
-        (replace-match "" nil nil)) 
-      (goto-char (point-min)) 
-      (search-forward ", ") 
-      (setq start (match-end 0)) 
-      (search-forward " at") 
-      (setq end (match-beginning 0)) 
-      (goto-char start) 
-      (capitalize-word 1) 
-      (buffer-substring start end))))
-;; 中文的天干地支 
-(setq calendar-chinese-celestial-stem ["甲" "乙" "丙" "丁" "戊" "己" "庚" "辛" "壬" "癸"]) 
-(setq calendar-chinese-terrestrial-branch ["子" "丑" "寅" "卯" "辰" "巳" "午" "未" "申" "酉" "戌" "亥"]) 
+;; ;; sunset 日落而息 
+;; (defun diary-sunset () 
+;;   (let ((dss (diary-sunrise-sunset)) 
+;;         start end) 
+;;     (with-temp-buffer 
+;;       (insert dss) 
+;;       (goto-char (point-min)) 
+;;       (while (re-search-forward " ([^)]*)" nil t) 
+;;         (replace-match "" nil nil)) 
+;;       (goto-char (point-min)) 
+;;       (search-forward ", ") 
+;;       (setq start (match-end 0)) 
+;;       (search-forward " at") 
+;;       (setq end (match-beginning 0)) 
+;;       (goto-char start) 
+;;       (capitalize-word 1) 
+;;       (buffer-substring start end))))
+;; ;; 中文的天干地支 
+;; (setq calendar-chinese-celestial-stem ["甲" "乙" "丙" "丁" "戊" "己" "庚" "辛" "壬" "癸"]) 
+;; (setq calendar-chinese-terrestrial-branch ["子" "丑" "寅" "卯" "辰" "巳" "午" "未" "申" "酉" "戌" "亥"]) 
 
-;;设置一周从周一开始. 
-(setq calendar-week-start-day 1) 
 
-(require 'cal-china-x)
+;; (use-package cal-china-x)
 ;;中美的节日. 
-(setq mark-holidays-in-calendar t) 
-(setq cal-china-x-important-holidays cal-china-x-chinese-holidays) 
+;; (setq mark-holidays-in-calendar t) 
+;; (setq cal-china-x-important-holidays cal-china-x-chinese-holidays) 
 
-(setq calendar-holidays 
-      (append cal-china-x-important-holidays 
-              cal-china-x-general-holidays 
-              holiday-general-holidays 
-              holiday-christian-holidays 
-              ))
+;; (setq calendar-holidays 
+;;       (append cal-china-x-important-holidays 
+;;               cal-china-x-general-holidays 
+;;               holiday-general-holidays 
+;;               holiday-christian-holidays 
+;;               ))
 
 ;; display Chinese date 
-(setq org-agenda-format-date 'zeroemacs/org-agenda-format-date-aligned) 
  
-(defun zeroemacs/org-agenda-format-date-aligned (date) 
-  "Format a DATE string for display in the daily/weekly agenda, or timeline. 
-      This function makes sure that dates are aligned for easy reading." 
-  (require 'cal-iso) 
-  (let* ((dayname (aref cal-china-x-days 
-                        (calendar-day-of-week date))) 
-         (day (cadr date)) 
-         (month (car date)) 
-         (year (nth 2 date)) 
-         (cn-date (calendar-chinese-from-absolute (calendar-absolute-from-gregorian date))) 
-         (cn-month (cl-caddr cn-date)) 
-         (cn-day (cl-cadddr cn-date)) 
-         (cn-month-string (concat (aref cal-china-x-month-name 
-                                        (1- (floor cn-month))) 
-                                  (if (integerp cn-month) 
-                                      "" 
-                                    "(闰月)"))) 
-         (cn-day-string (aref cal-china-x-day-name 
-                              (1- cn-day)))) 
-    (format "%04d-%02d-%02d 周%s %s%s" year month 
-            day dayname cn-month-string cn-day-string))) 
+;; (defun zeroemacs/org-agenda-format-date-aligned (date) 
+;;   "Format a DATE string for display in the daily/weekly agenda, or timeline. 
+;;       This function makes sure that dates are aligned for easy reading." 
+;;   (require 'cal-iso) 
+;;   (let* ((dayname (aref cal-china-x-days 
+;;                         (calendar-day-of-week date))) 
+;;          (day (cadr date)) 
+;;          (month (car date)) 
+;;          (year (nth 2 date)) 
+;;          (cn-date (calendar-chinese-from-absolute (calendar-absolute-from-gregorian date))) 
+;;          (cn-month (cl-caddr cn-date)) 
+;;          (cn-day (cl-cadddr cn-date)) 
+;;          (cn-month-string (concat (aref cal-china-x-month-name 
+;;                                         (1- (floor cn-month))) 
+;;                                   (if (integerp cn-month) 
+;;                                       "" 
+;;                                     "(闰月)"))) 
+;;          (cn-day-string (aref cal-china-x-day-name 
+;;                               (1- cn-day)))) 
+;;     (format "%04d-%02d-%02d 周%s %s%s" year month 
+;;             day dayname cn-month-string cn-day-string))) 
 
 (use-package markdown-mode
   :ensure t
   :mode ("README\\.md\\'" . gfm-mode)
   :init (setq markdown-command "multimarkdown")
   :bind (:map markdown-mode-map
-         ("C-c C-e" . markdown-do)))
+              ("C-c C-e" . markdown-do)))
 
-(defun my/org-entries-to-mac-calendar ()
-  (interactive)
-  (let ((entries '())
-        (script-file "/tmp/org-to-calendar.applescript"))
-    (org-map-entries
-     (lambda ()
-       (let* ((heading (org-get-heading t t t t))
-              (tags (org-get-tags))
-              (scheduled (org-entry-get nil "SCHEDULED"))
-              (timestamp (when scheduled
-                           (org-parse-time-string scheduled))))
-         (when timestamp
-           (push (list (apply 'encode-time (org-parse-time-string scheduled))
-                       heading
-                       tags)
-                 entries))))
-     nil nil) ; 仅扫描当前 org 文件
-    (with-temp-file script-file
-      (dolist (entry entries)
-        (let* ((time (car entry))
-               (title (replace-regexp-in-string "\\* \\|TODO\\|DONE" "" (nth 1 entry)))
-               (tags (mapconcat 'identity (nth 2 entry) ", "))
-               (year (string-to-number (format-time-string "%Y" time)))
-               (month (string-to-number (format-time-string "%m" time)))
-               (day (string-to-number (format-time-string "%d" time)))
-               (hour (string-to-number (format-time-string "%H" time)))
-               (minute (string-to-number (format-time-string "%M" time)))
-               (applescript-code (format "
-tell application \"Calendar\"
-    tell calendar \"My Calendar\"
-        set myevent to make new event with properties {summary:\"%s\", start date:date \"%d-%02d-%02d %02d:%02d:00\", end date:date \"%d-%02d-%02d %02d:%02d:00\", description:\"Tags: %s\"}
-    end tell
-end tell"
-                                         title
-                                         year month day hour minute
-                                         year month day (if (= hour 23) 0 (1+ hour)) (if (= hour 23) minute minute)
-                                         tags)))
-          (insert applescript-code "\n"))))
-    (shell-command (format "osascript %s" script-file))))
-
-(setq my-calendar-name "笔试面试")
-(defun my/org-current-entry-to-mac-calendar ()
-  (interactive)
-  (let ((calendar-name my-calendar-name)  ;; 将日历名称设置为变量
-        (script-file "/tmp/org-to-calendar.applescript"))
-    (save-excursion
-      (org-back-to-heading t)
-      (let* ((heading (org-get-heading t t t t))
-             (tags (org-get-tags))
-             (scheduled (org-entry-get nil "SCHEDULED"))
-             (timestamp (when scheduled
-                          (org-parse-time-string scheduled))))
-        (if timestamp
-            (progn
-              (with-temp-file script-file
-                (let* ((time (apply 'encode-time timestamp))
-                       (title (replace-regexp-in-string "\\* \\|TODO\\|DONE" "" heading))
-                       (tags (mapconcat 'identity tags ", "))
-                       (year (string-to-number (format-time-string "%Y" time)))
-                       (month (string-to-number (format-time-string "%m" time)))
-                       (day (string-to-number (format-time-string "%d" time)))
-                       (hour (string-to-number (format-time-string "%H" time)))
-                       (minute (string-to-number (format-time-string "%M" time)))
-                       (applescript-code (format "
-tell application \"Calendar\"
-    tell calendar \"%s\"
-        set myevent to make new event with properties {summary:\"%s\", start date:date \"%d-%02d-%02d %02d:%02d:00\", end date:date \"%d-%02d-%02d %02d:%02d:00\", description:\"Tags: %s\"}
-    end tell
-end tell"
-                                                 calendar-name  ;; 使用变量
-                                                 title
-                                                 year month day hour minute
-                                                 year month day (if (= hour 23) 0 (1+ hour)) (if (= hour 23) minute minute)
-                                                 tags)))
-                  (insert applescript-code "\n")))
-              (shell-command (format "osascript %s" script-file))
-              (message "Event added to calendar."))
-          (message "The current line does not have a scheduled timestamp or is not a heading."))))))
-
-  ;; 完成任务时, 将其划线勾掉
-  (set-face-attribute 'org-headline-done nil :strike-through t)
-
-(defun mqd/agenda-schedule-today ()
-  "Schedule the current TODO to today."
-  (interactive)
-  (let ((today (format-time-string "%Y-%m-%d")))
-    (org-agenda-schedule nil today)))
 
 (with-eval-after-load 'org-agenda
+  (setq org-agenda-include-diary t) 
+  (setq org-agenda-diary-file "~/Documents/OrgMode/ORG/Master/standard-diary") 
+  (setq diary-file "~/Documents/OrgMode/ORG/Master/standard-diary") 
+
+  ;;设置一周从周一开始. 
+  (setq calendar-week-start-day 1) 
+  ;; (setq org-agenda-format-date 'zeroemacs/org-agenda-format-date-aligned) 
   (define-key org-agenda-mode-map (kbd "a") 'agenda-schedule-today))
 
 

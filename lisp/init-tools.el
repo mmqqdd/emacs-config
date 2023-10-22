@@ -37,7 +37,7 @@
 
 (use-package highlight-global
   :ensure nil
-  :commands (highlight-frame-toggle)
+  :commands (mqd/highlight-at-point mqd/clearn-highlight)
   :quelpa (highlight-global :fetcher github :repo "glen-dai/highlight-global")
   :config
   (progn
@@ -48,7 +48,7 @@
 		    ('hi-blue-b . 0)))))
 
 ;; do what i mean
-(defun zilongshanren/highlight-dwim ()
+(defun mqd/highlight-at-point ()
   (interactive)
   (if (use-region-p)
       (progn
@@ -56,7 +56,7 @@
 	(deactivate-mark))
     (symbol-overlay-put)))
 
-(defun zilongshanren/clearn-highlight ()
+(defun mqd/clearn-highlight ()
   (interactive)
   (clear-highlight-frame)
   (symbol-overlay-remove-all))

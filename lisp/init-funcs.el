@@ -133,4 +133,91 @@ Supports exporting consult-grep to wgrep, file to wdeired, and consult-location 
     (other-window 1)) ; 切换到新建的窗口
   (org-agenda-list)) ; 打开Agenda视图
 
+(defun my/org-entries-to-mac-calendar ()
+  (interactive)
+  (let ((entries '())
+        (script-file "/tmp/org-to-calendar.applescript"))
+    (org-map-entries
+     (lambda ()
+       (let* ((heading (org-get-heading t t t t))
+              (tags (org-get-tags))
+              (scheduled (org-entry-get nil "SCHEDULED"))
+              (timestamp (when scheduled
+                           (org-parse-time-string scheduled))))
+         (when timestamp
+           (push (list (apply 'encode-time (org-parse-time-string scheduled))
+                       heading
+                       tags)
+                 entries))))
+     nil nil) ; 仅扫描当前 org 文件
+    (with-temp-file script-file
+      (dolist (entry entries)
+        (let* ((time (car entry))
+               (title (replace-regexp-in-string "\\* \\|TODO\\|DONE" "" (nth 1 entry)))
+               (tags (mapconcat 'identity (nth 2 entry) ", "))
+               (year (string-to-number (format-time-string "%Y" time)))
+               (month (string-to-number (format-time-string "%m" time)))
+               (day (string-to-number (format-time-string "%d" time)))
+               (hour (string-to-number (format-time-string "%H" time)))
+               (minute (string-to-number (format-time-string "%M" time)))
+               (applescript-code (format "
+tell application \"Calendar\"
+    tell calendar \"My Calendar\"
+        set myevent to make new event with properties {summary:\"%s\", start date:date \"%d-%02d-%02d %02d:%02d:00\", end date:date \"%d-%02d-%02d %02d:%02d:00\", description:\"Tags: %s\"}
+    end tell
+end tell"
+                                         title
+                                         year month day hour minute
+                                         year month day (if (= hour 23) 0 (1+ hour)) (if (= hour 23) minute minute)
+                                         tags)))
+          (insert applescript-code "\n"))))
+    (shell-command (format "osascript %s" script-file))))
+
+(setq my-calendar-name "笔试面试")
+(defun my/org-current-entry-to-mac-calendar ()
+  (interactive)
+  (let ((calendar-name my-calendar-name)  ;; 将日历名称设置为变量
+        (script-file "/tmp/org-to-calendar.applescript"))
+    (save-excursion
+      (org-back-to-heading t)
+      (let* ((heading (org-get-heading t t t t))
+             (tags (org-get-tags))
+             (scheduled (org-entry-get nil "SCHEDULED"))
+             (timestamp (when scheduled
+                          (org-parse-time-string scheduled))))
+        (if timestamp
+            (progn
+              (with-temp-file script-file
+                (let* ((time (apply 'encode-time timestamp))
+                       (title (replace-regexp-in-string "\\* \\|TODO\\|DONE" "" heading))
+                       (tags (mapconcat 'identity tags ", "))
+                       (year (string-to-number (format-time-string "%Y" time)))
+                       (month (string-to-number (format-time-string "%m" time)))
+                       (day (string-to-number (format-time-string "%d" time)))
+                       (hour (string-to-number (format-time-string "%H" time)))
+                       (minute (string-to-number (format-time-string "%M" time)))
+                       (applescript-code (format "
+tell application \"Calendar\"
+    tell calendar \"%s\"
+        set myevent to make new event with properties {summary:\"%s\", start date:date \"%d-%02d-%02d %02d:%02d:00\", end date:date \"%d-%02d-%02d %02d:%02d:00\", description:\"Tags: %s\"}
+    end tell
+end tell"
+                                                 calendar-name  ;; 使用变量
+                                                 title
+                                                 year month day hour minute
+                                                 year month day (if (= hour 23) 0 (1+ hour)) (if (= hour 23) minute minute)
+                                                 tags)))
+                  (insert applescript-code "\n")))
+              (shell-command (format "osascript %s" script-file))
+              (message "Event added to calendar."))
+          (message "The current line does not have a scheduled timestamp or is not a heading."))))))
+
+
+(defun mqd/agenda-schedule-today ()
+  "Schedule the current TODO to today."
+  (interactive)
+  (let ((today (format-time-string "%Y-%m-%d")))
+    (org-agenda-schedule nil today)))
+
+
 (provide 'init-funcs)

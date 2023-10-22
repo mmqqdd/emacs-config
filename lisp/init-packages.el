@@ -1,7 +1,7 @@
 (require 'package)
-;;(setq package-archives '(("melpa" . "http://elpa.zilongshanren.com/melpa/")))
-;;(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
-;;(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+;; (setq package-archives '(("melpa" . "http://elpa.zilongshanren.com/melpa/")))
+;; (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")))
+;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
 (setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
                          ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
@@ -16,7 +16,9 @@
 	(package-install 'use-package))
 
 (require 'use-package-ensure)
+
 (setq use-package-always-ensure t)
+(setq use-package-always-defer t)
 
 (use-package restart-emacs
   :ensure t)
@@ -33,5 +35,11 @@
   :init
   (setq quelpa-use-package-inhibit-loading-quelpa t)
   :demand t)
+
+(use-package benchmark-init
+  :ensure t
+  :demand t
+  :config
+  (add-hook 'after-init-hook 'benchmark-init/deactivate))
 
 (provide 'init-packages)

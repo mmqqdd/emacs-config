@@ -1,0 +1,17 @@
+;;;; Emacs Bookmark Format Version 1;;;; -*- coding: utf-8-emacs; mode: lisp-data -*-
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("learn-note.org"
+ (filename . "~/.emacs.d/learn-note.org")
+ (front-context-string . "e\n   benchmark-i")
+ (rear-context-string . "ow-durations-tre")
+ (position . 3552)
+ (last-modified 25908 55259 57424 0))
+("org-capture-last-stored"
+ (filename . "~/workspace/gtd/diary.org")
+ (front-context-string . "** TODO [#C] .em")
+ (rear-context-string . "10-22 日 15:27]\n\n")
+ (position . 6539)
+ (last-modified 25908 59467 390203 0))
+)

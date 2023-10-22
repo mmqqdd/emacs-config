@@ -104,7 +104,9 @@ Create prefix map: +general-global-NAME. Prefix bindings in BODY with INFIX-KEY.
     )
 
   (+general-global-menu! "search" "s"
-    "b" 'my/search-for-symbol-at-point)
+    "b" 'my/search-for-symbol-at-point
+    "h" 'mqd/highlight-at-point
+    "c" 'mqd/clearn-highlight)
 
   (+general-global-menu! "agenda" "a"
     "a" 'my/org-agenda-list)
@@ -171,11 +173,21 @@ Create prefix map: +general-global-NAME. Prefix bindings in BODY with INFIX-KEY.
   "k" 'tabspaces-close-workspace)
 
 (+general-global-menu! "project" "p"
-  "p" '(tabspaces-open-or-create-project-and-workspace :which-key "open-project"))
+  "p" '(tabspaces-open-or-create-project-and-workspace :which-key "open-project")
+  "d" '(tabspaces-remove-current-buffer :which-key "remove-buffer")
+  "s" 'tabspaces-save-session
+  "R" 'tab-rename
+  "k" 'tabspaces-close-workspace)
 
 (+general-global-menu! "open" "o"
   "p" 'treemacs
   "t" 'my/open-eshell-at-bottom)
+
+(+general-global-menu! "translate" "t"
+  "t" 'google-translate-at-point
+  "T" 'google-translate-at-point-reverse
+  "w" 'google-translate-query-translate
+  "W" 'google-translate-query-translate)
 
 ;; 选中单词，R，批量操作所有相同单词
 (use-package iedit
@@ -210,7 +222,7 @@ Create prefix map: +general-global-NAME. Prefix bindings in BODY with INFIX-KEY.
        '("H" (lambda ()
 	       (interactive)
 	       (call-interactively
-		'zilongshanren/highlight-dwim)))
+		'mqd/highlight-at-point)))
        new-bindings)
       (cl-pushnew
        '("/" (lambda ()
@@ -235,6 +247,18 @@ Create prefix map: +general-global-NAME. Prefix bindings in BODY with INFIX-KEY.
 	       (interactive)
 	       (call-interactively
 		'my/search-for-symbol-at-point)))
+       new-bindings)
+      (cl-pushnew
+       '("t" (lambda ()
+	       (interactive)
+	       (call-interactively
+		'google-translate-at-point)))
+       new-bindings)
+      (cl-pushnew
+       '("T" (lambda ()
+	       (interactive)
+	       (call-interactively
+		'google-translate-at-point-reverse)))
        new-bindings)
       (setq ad-return-value (cons new-msg new-bindings)))))
 
